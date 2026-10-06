@@ -1,0 +1,646 @@
+/* ==========================================================================
+   APEX MOTORS — Global styles
+   Design tokens, resets, base typography, navigation and footer.
+   Page-specific layouts live in pages.css; reusable UI pieces (cards,
+   buttons, forms) live in components.css.
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    /* -- Color tokens (DARK, the default) ------------------------------
+       Every text token below is checked against WCAG AA (4.5:1) on bg,
+       surface and surface-alt; see README "Accessibility". */
+    --color-bg: #0a0a0b;
+    --color-surface: #141416;
+    --color-surface-alt: #1a1a1d;
+    --color-border: rgba(236, 233, 229, 0.14);
+    --color-border-strong: rgba(236, 233, 229, 0.3);
+    --color-border-button: rgba(236, 233, 229, 0.6); /* outline buttons, inputs */
+    --color-text: #ece9e5;
+    --color-text-muted: #b9b6af;   /* was #9a978f */
+    --color-text-faint: #9f9c95;   /* was #67645e (3.2:1, failed AA) */
+    --color-accent: #c1202f;       /* fills and decoration only */
+    --color-accent-bright: #e8384d;/* large text, borders, glows */
+    --color-accent-text: #ff7184;  /* SMALL red text: labels, links, errors */
+    --color-accent-deep: #8f1523;
+    --color-accent-dim: #3a0e14;
+    --color-accent-glow: rgba(232, 56, 77, 0.45);
+    --color-focus: #ffb4a8;
+    --color-btn-top: #cc2639;      /* primary button gradient; white text >= 5.4:1 */
+    --color-on-accent: #ffffff;
+
+    /* Text that always sits on a dark photo overlay, in either theme */
+    --color-on-image: #f4f1ed;
+    --color-on-image-muted: #d3d0ca;
+    --color-on-image-accent: #ff8d9c;
+    --hero-glow-1: rgba(232, 56, 77, 0.30);
+    --hero-glow-2: rgba(232, 56, 77, 0.16);
+
+    --color-header-bg: rgba(10, 10, 11, 0.86);
+    --color-header-bg-solid: #0a0a0b;
+    --color-scrim: rgba(6, 6, 7, 0.9);
+    --color-tint: rgba(232, 56, 77, 0.12);       /* subtle red wash */
+    --color-tint-strong: rgba(232, 56, 77, 0.22);
+    --color-plate-a: #1c1c1f;
+    --color-plate-b: #101012;
+    --color-success: #8fdca6;
+    --color-success-border: #3f7d52;
+    --color-warning: #f2c36b;
+    --color-sold: #c9c6c0;
+    --shadow-card: 0 26px 50px -22px rgba(0, 0, 0, 0.9);
+
+    /* -- Type ------------------------------------------------------------ */
+    --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    /* -- Layout ----------------------------------------------------------- */
+    --max-width: 1240px;
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+    --radius: 2px;
+
+    /* -- Motion ------------------------------------------------------------ */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --duration: 0.35s;
+    --shadow-red: 0 10px 28px -8px rgba(232, 56, 77, 0.55);
+}
+
+/* -- LIGHT theme -----------------------------------------------------------
+   Applied when the user picks it (data-theme="light") or, with no stored
+   choice, when the OS prefers light. The same token set is declared twice
+   (CSS can't share one block between a media query and an attribute
+   selector without a build step), so edit both together. */
+:root[data-theme="light"] {
+    color-scheme: light;
+    --color-bg: #ffffff;
+    --color-surface: #f6f4f1;
+    --color-surface-alt: #ece8e3;
+    --color-border: rgba(23, 23, 26, 0.14);
+    --color-border-strong: rgba(23, 23, 26, 0.3);
+    --color-border-button: rgba(23, 23, 26, 0.62);
+    --color-text: #17171a;
+    --color-text-muted: #46433d;
+    --color-text-faint: #66625b;
+    --color-accent: #b3202f;
+    --color-accent-bright: #c4283a;
+    --color-accent-text: #a51c2b;
+    --color-accent-deep: #8f1523;
+    --color-accent-dim: #fbe9ec;
+    --color-accent-glow: rgba(179, 32, 47, 0.28);
+    --color-focus: #1a4fd6;
+    --color-btn-top: #c4283a;
+    --color-header-bg: rgba(255, 255, 255, 0.9);
+    --color-header-bg-solid: #ffffff;
+    --color-scrim: rgba(14, 14, 16, 0.78);
+    --color-tint: rgba(179, 32, 47, 0.07);
+    --color-tint-strong: rgba(179, 32, 47, 0.14);
+    --color-plate-a: #e9e5e0;
+    --color-plate-b: #d9d4cd;
+    --color-success: #1d6b3a;
+    --color-success-border: #2f8a50;
+    --color-warning: #7a5200;
+    --color-sold: #5c5952;
+    --shadow-card: 0 22px 44px -24px rgba(23, 23, 26, 0.35);
+    --shadow-red: 0 10px 24px -10px rgba(179, 32, 47, 0.5);
+    --hero-glow-1: rgba(179, 32, 47, 0.14);
+    --hero-glow-2: rgba(179, 32, 47, 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        color-scheme: light;
+        --color-bg: #ffffff;
+        --color-surface: #f6f4f1;
+        --color-surface-alt: #ece8e3;
+        --color-border: rgba(23, 23, 26, 0.14);
+        --color-border-strong: rgba(23, 23, 26, 0.3);
+        --color-border-button: rgba(23, 23, 26, 0.62);
+        --color-text: #17171a;
+        --color-text-muted: #46433d;
+        --color-text-faint: #66625b;
+        --color-accent: #b3202f;
+        --color-accent-bright: #c4283a;
+        --color-accent-text: #a51c2b;
+        --color-accent-deep: #8f1523;
+        --color-accent-dim: #fbe9ec;
+        --color-accent-glow: rgba(179, 32, 47, 0.28);
+        --color-focus: #1a4fd6;
+        --color-btn-top: #c4283a;
+        --color-header-bg: rgba(255, 255, 255, 0.9);
+        --color-header-bg-solid: #ffffff;
+        --color-scrim: rgba(14, 14, 16, 0.78);
+        --color-tint: rgba(179, 32, 47, 0.07);
+        --color-tint-strong: rgba(179, 32, 47, 0.14);
+        --color-plate-a: #e9e5e0;
+        --color-plate-b: #d9d4cd;
+        --color-success: #1d6b3a;
+        --color-success-border: #2f8a50;
+        --color-warning: #7a5200;
+        --color-sold: #5c5952;
+        --shadow-card: 0 22px 44px -24px rgba(23, 23, 26, 0.35);
+        --shadow-red: 0 10px 24px -10px rgba(179, 32, 47, 0.5);
+        --hero-glow-1: rgba(179, 32, 47, 0.14);
+        --hero-glow-2: rgba(179, 32, 47, 0.08);
+    }
+}
+
+/* -- Reset ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+p {
+    margin: 0;
+}
+
+/* Respect reduced-motion preference across the site */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Visible focus state for every interactive element */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+}
+
+/* Utility: screen-reader-only text (used for accessible labels) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+    font-weight: 600;
+}
+
+.section-heading {
+    font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+    max-width: 20ch;
+}
+
+.section-intro {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    font-size: 1.05rem;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-header-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 0 var(--color-tint-strong);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.1rem;
+}
+
+.nav-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    font-family: var(--font-display);
+}
+
+.nav-brand-mark {
+    font-size: 1.35rem;
+    letter-spacing: 0.02em;
+}
+
+.nav-brand-mark span {
+    color: var(--color-accent-text);
+}
+
+.nav-brand-place {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.08em;
+    margin-top: 0.3rem;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.1rem;
+}
+
+.nav-links a {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    transition: color var(--duration) var(--ease);
+    position: relative;
+    padding-block: 0.25rem;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+    color: var(--color-text);
+}
+
+.nav-links a:not(.nav-cta)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -2px;
+    height: 2px;
+    background: var(--color-accent-bright);
+    transition: right var(--duration) var(--ease);
+}
+
+.nav-links a:not(.nav-cta):hover::before {
+    right: 0;
+}
+
+.nav-links a[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: var(--color-accent-bright);
+}
+
+.nav-links a.nav-cta {
+    background: linear-gradient(180deg, var(--color-btn-top), var(--color-accent) 60%, var(--color-accent-deep));
+    border: 1px solid var(--color-accent-bright);
+    padding: 0.6rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-on-accent);
+    box-shadow: 0 6px 18px -6px var(--color-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
+        filter var(--duration) var(--ease);
+}
+
+.nav-links a.nav-cta:hover {
+    color: var(--color-on-accent);
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 10px 24px -6px var(--color-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.nav-links a.nav-cta[aria-current="page"]::after {
+    display: none;
+}
+
+.nav-toggle {
+    display: none;
+    background: var(--color-tint);
+    border: 1px solid var(--color-accent-bright);
+    border-radius: 4px;
+    width: 48px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
+        transform 0.15s var(--ease);
+}
+
+.nav-toggle:hover {
+    background: var(--color-tint-strong);
+}
+
+.nav-toggle:active {
+    transform: scale(0.94);
+}
+
+.nav-toggle[aria-expanded="true"] {
+    background: var(--color-accent);
+    border-color: var(--color-accent-bright);
+    box-shadow: 0 0 0 4px var(--color-tint-strong), var(--shadow-red);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars span {
+    background: #fff;
+}
+
+.nav-toggle-bars {
+    position: relative;
+    width: 22px;
+    height: 14px;
+}
+
+.nav-toggle-bars span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
+}
+
+.nav-toggle-bars span:nth-child(1) { top: 0; }
+.nav-toggle-bars span:nth-child(2) { top: 50%; margin-top: -1px; }
+.nav-toggle-bars span:nth-child(3) { bottom: 0; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(2) {
+    opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+    /* backdrop-filter would make the header the containing block for the
+       fixed menu panel, collapsing it; use an opaque header here instead. */
+    .site-header {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: var(--color-header-bg-solid);
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        inset: 80px 0 0 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--color-header-bg-solid);
+        overflow-y: auto;
+        z-index: 99;
+        padding: 1rem var(--gutter) 2rem;
+        transform: translateY(-8px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-links.is-open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .nav-links a,
+    .nav-links .nav-cta {
+        width: 100%;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--color-border);
+        font-size: 1rem;
+    }
+
+    .nav-links a:not(.nav-cta)::before,
+    .nav-links a[aria-current="page"]::after { display: none; }
+
+    .nav-links a[aria-current="page"] {
+        color: var(--color-text);
+        border-left: 3px solid var(--color-accent-bright);
+        padding-left: 0.9rem;
+    }
+
+    .nav-links li { width: 100%; }
+
+    .nav-links a { display: block; }
+
+    .nav-links a.nav-cta {
+        margin-top: 1.25rem;
+        justify-content: center;
+        text-align: center;
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid var(--color-accent-bright);
+    }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+    border-top: 1px solid var(--color-border);
+    margin-top: 6rem;
+    padding-block: 3.5rem 2rem;
+    color: var(--color-text-muted);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.footer-brand {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-text);
+}
+
+.footer-tagline {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    max-width: 28ch;
+}
+
+.footer-col-title {
+    font-size: 0.78rem;
+    color: var(--color-text);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.9rem;
+}
+
+.footer-col a,
+.footer-col p {
+    display: block;
+    font-size: 0.88rem;
+    margin-bottom: 0.55rem;
+}
+
+.footer-col a:hover {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* ==========================================================================
+   v8 additions: skip link, nav tools (theme toggle), footer demo note
+   ========================================================================== */
+
+.skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 300;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    padding: 0.75rem 1.1rem;
+    font-weight: 600;
+    transition: top 0.2s var(--ease);
+}
+
+.skip-link:focus {
+    top: 0.75rem;
+}
+
+/* Right-hand cluster: theme toggle + (mobile) menu button */
+.nav-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-border-button);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-text);
+    padding: 0;
+    transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.theme-toggle:hover {
+    background: var(--color-tint);
+    border-color: var(--color-accent-bright);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Show the icon for the mode you would switch TO */
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+:root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+:root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme]) .theme-toggle .icon-sun { display: none; }
+    :root:not([data-theme]) .theme-toggle .icon-moon { display: block; }
+}
+
+.footer-demo-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    max-width: 60ch;
+}
+
+main:focus { outline: none; }

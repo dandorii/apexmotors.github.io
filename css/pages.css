@@ -1,0 +1,1104 @@
+/* ==========================================================================
+   APEX MOTORS — Page-specific layouts
+   ========================================================================== */
+
+.page-header {
+    padding-block: 3.5rem 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-header .eyebrow {
+    margin-bottom: 0.9rem;
+    display: block;
+}
+
+.page-header .section-intro {
+    margin-top: 0.75rem;
+}
+
+section {
+    padding-block: 4.5rem;
+}
+
+section.tight {
+    padding-block: 3rem;
+}
+
+/* -- Home: hero ----------------------------------------------------------- */
+
+.hero {
+    position: relative;
+    padding-block: clamp(1.75rem, 4vw, 3rem) 4rem;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 65% 70% at 85% 5%, var(--hero-glow-1), transparent 62%),
+        radial-gradient(ellipse 45% 45% at 0% 100%, var(--hero-glow-2), transparent 62%);
+    pointer-events: none;
+    z-index: -1;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3rem;
+    align-items: end;
+}
+
+.hero-eyebrow {
+    color: var(--color-accent-text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hero-eyebrow::before {
+    content: "";
+    width: 2rem;
+    height: 2px;
+    background: var(--color-accent-bright);
+}
+
+.hero-title {
+    font-size: clamp(2.75rem, 6.5vw, 5.1rem);
+    animation: hero-rise 0.8s var(--ease) both;
+}
+
+@keyframes hero-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-tagline {
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-top: 1.5rem;
+}
+
+.hero-copy {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    max-width: 40ch;
+    margin-top: 1.25rem;
+}
+
+.hero-actions {
+    margin-top: 1.9rem;
+}
+
+.hero-title .accent {
+    color: var(--color-accent-bright);
+    text-shadow: 0 0 40px var(--color-accent-glow);
+}
+
+.hero-meta {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.hero-meta-item .value {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    display: block;
+}
+
+.hero-meta-item .label {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-top: 0.2rem;
+    display: block;
+}
+
+@media (max-width: 860px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-meta {
+        flex-direction: row;
+        border-left: none;
+        border-top: 1px solid var(--color-border-strong);
+        padding-left: 0;
+        padding-top: 1.5rem;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+}
+
+/* -- Home: section headers shared layout ----------------------------------- */
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2.75rem;
+    flex-wrap: wrap;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+}
+
+@media (max-width: 960px) {
+    .grid-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 640px) {
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -- Home: why us ----------------------------------------------------------- */
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.why-item {
+    border-top: 1px solid var(--color-border-strong);
+    padding-top: 1.25rem;
+    position: relative;
+    transition: border-color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+
+.why-item::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 2.5rem;
+    height: 2px;
+    background: var(--color-accent-bright);
+    transition: width 0.5s var(--ease);
+}
+
+.why-item:hover::before {
+    width: 100%;
+}
+
+.why-item h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
+}
+
+.why-item p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 860px) {
+    .why-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 560px) {
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -- Home: services preview -------------------------------------------------- */
+
+.services-preview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border: 1px solid var(--color-border);
+}
+
+.service-chip {
+    padding: 2rem 1.25rem;
+    border-right: 1px solid var(--color-border);
+    font-size: 0.95rem;
+    transition: background var(--duration) var(--ease), color var(--duration) var(--ease),
+        box-shadow var(--duration) var(--ease);
+}
+
+.service-chip:hover {
+    background: var(--color-tint);
+    box-shadow: inset 0 -2px 0 var(--color-accent-bright);
+}
+
+.service-chip:last-child {
+    border-right: none;
+}
+
+@media (max-width: 860px) {
+    .services-preview {
+        grid-template-columns: 1fr 1fr;
+    }
+    .service-chip {
+        border-right: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+@media (max-width: 560px) {
+    .services-preview {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -- Closing CTA band ---------------------------------------------------- */
+
+.cta-band {
+    background: radial-gradient(ellipse 60% 100% at 50% 100%, var(--color-tint-strong), transparent 70%);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+    padding-block: 5rem;
+}
+
+.cta-band h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    max-width: 24ch;
+    margin-inline: auto;
+}
+
+.cta-band .btn-row {
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* -- Inventory ------------------------------------------------------------- */
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--color-text-muted);
+    border: 1px dashed var(--color-border-strong);
+}
+
+@media (max-width: 960px) {
+    .inventory-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 620px) {
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -- Vehicle detail --------------------------------------------------------- */
+
+.vehicle-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: stretch;
+    padding-block: 3.5rem;
+}
+
+.vehicle-hero-plate {
+    position: relative;
+    background:
+        radial-gradient(circle at 25% 20%, rgba(161, 29, 44, 0.32), transparent 55%),
+        linear-gradient(160deg, var(--color-plate-a) 0%, var(--color-plate-b) 75%);
+    border: 1px solid var(--color-border);
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.25rem;
+}
+
+.vehicle-hero-plate .manufacturer,
+.vehicle-hero-plate h1 {
+    position: relative;
+}
+
+.vehicle-hero-plate .manufacturer {
+    font-size: 0.85rem;
+    color: var(--color-accent-text);
+    letter-spacing: 0.06em;
+}
+
+.vehicle-hero-plate h1 {
+    font-size: clamp(2.25rem, 5vw, 3.4rem);
+    margin-top: 0.5rem;
+}
+
+.vehicle-hero-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.vehicle-hero-desc {
+    color: var(--color-text-muted);
+    font-size: 1.02rem;
+}
+
+.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.spec-table tr {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.spec-table td {
+    padding: 0.9rem 0;
+    font-size: 0.92rem;
+}
+
+.spec-table td:first-child {
+    color: var(--color-text-muted);
+    width: 45%;
+}
+
+.spec-table td:last-child {
+    color: var(--color-text);
+    font-family: var(--font-display);
+}
+
+.vehicle-not-found {
+    text-align: center;
+    padding-block: 6rem;
+}
+
+.vehicle-not-found .section-intro {
+    margin-inline: auto;
+    margin-top: 1rem;
+}
+
+.vehicle-not-found .btn-row {
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+@media (max-width: 860px) {
+    .vehicle-hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -- About ------------------------------------------------------------------ */
+
+.about-lead {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    font-family: var(--font-display);
+    max-width: 26ch;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.about-grid h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border-strong);
+    position: relative;
+}
+
+.about-grid h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 2.5rem;
+    height: 2px;
+    background: var(--color-accent-bright);
+}
+
+/* Justified, hyphenated copy keeps both columns flush and even. */
+.about-grid .section-intro {
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+@media (max-width: 760px) {
+    .about-grid .section-intro { text-align: left; hyphens: manual; }
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--color-border-strong);
+    padding-top: 2rem;
+}
+
+.about-stats .value {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    color: var(--color-accent-text);
+}
+
+.about-stats .label {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+}
+
+@media (max-width: 760px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .about-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* -- Services --------------------------------------------------------------- */
+
+.services-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 1fr;
+    gap: 2rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border-strong);
+    align-items: start;
+    transition: background var(--duration) var(--ease), padding var(--duration) var(--ease);
+}
+
+.service-row:hover .index {
+    color: var(--color-accent-text);
+}
+
+.service-row:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+}
+
+.service-row .index {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--color-text-faint);
+}
+
+.service-row h3 {
+    font-size: 1.4rem;
+}
+
+.service-row p {
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 760px) {
+    .service-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+/* -- Contact ------------------------------------------------------------------ */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 3.5rem;
+}
+
+.contact-info-block {
+    border-top: 1px solid var(--color-border-strong);
+    padding-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.contact-info-block h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-info-block p,
+.contact-info-block a {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 860px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Vehicle detail (v7)
+   ========================================================================== */
+
+.breadcrumb {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    padding-top: 2rem;
+}
+
+.breadcrumb a {
+    color: var(--color-accent-text);
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.vehicle-hero {
+    grid-template-columns: 1.35fr 0.9fr;
+    gap: 2.5rem;
+    padding-block: 1.5rem 3rem;
+    align-items: start;
+}
+
+.vehicle-hero-media {
+    min-width: 0;
+}
+
+/* gallery */
+.vg-stage {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-plate-b);
+    box-shadow: var(--shadow-card), 0 0 60px -20px var(--color-accent-glow);
+}
+
+.vg-main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.16s var(--ease), transform 0.8s var(--ease);
+}
+
+.vg-main.is-swapping {
+    opacity: 0;
+}
+
+.vg-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 70%, rgba(10, 10, 11, 0.55));
+    pointer-events: none;
+}
+
+.vg-label {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 2;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    padding: 0.35rem 0.75rem;
+}
+
+.vg-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-border-strong);
+    background: rgba(10, 10, 11, 0.6);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: 1.1rem;
+    transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.vg-nav:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent-bright);
+}
+
+.vg-prev { left: 0.75rem; }
+.vg-next { right: 0.75rem; }
+
+.vg-thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+}
+
+.vg-thumb {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    background: var(--color-plate-b);
+    opacity: 0.75;
+    transition: opacity var(--duration) var(--ease), border-color var(--duration) var(--ease),
+        transform var(--duration) var(--ease);
+}
+
+.vg-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vg-thumb span {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 0.25rem 0.4rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    text-align: left;
+    color: #fff;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+}
+
+.vg-thumb:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.vg-thumb.is-active {
+    opacity: 1;
+    border-color: var(--color-accent-bright);
+    box-shadow: 0 0 0 1px var(--color-accent-bright), 0 8px 20px -8px var(--color-accent-glow);
+}
+
+/* info column */
+.vehicle-hero-info {
+    gap: 1.25rem;
+}
+
+.vehicle-meta-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tag-red {
+    border-color: var(--color-accent-bright);
+    color: var(--color-accent-text);
+    background: var(--color-tint);
+}
+
+.manufacturer-label {
+    display: block;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+    margin-bottom: 0.4rem;
+}
+
+.vehicle-title {
+    font-size: clamp(2.2rem, 4.2vw, 3.3rem);
+}
+
+.key-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+}
+
+.key-stat {
+    background: var(--color-surface);
+    padding: 0.9rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.key-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+}
+
+.key-stat-label {
+    font-size: 0.76rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.booking-card {
+    border: 1px solid var(--color-accent-bright);
+    background: linear-gradient(160deg, var(--color-tint), var(--color-surface) 60%);
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-shadow: 0 20px 40px -24px var(--color-accent-glow);
+}
+
+.booking-card-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+}
+
+.booking-card p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+/* specs + meters */
+.vehicle-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    border-top: 1px solid var(--color-border);
+    padding-block: 3rem;
+}
+
+.detail-panel .eyebrow {
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.detail-panel .section-heading {
+    font-size: 1.7rem;
+}
+
+.spec-table tr {
+    transition: background var(--duration) var(--ease);
+}
+
+.spec-table tr:hover {
+    background: var(--color-tint);
+}
+
+.meters {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-top: 1.5rem;
+}
+
+.meter-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.meter-head strong {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.meter-track {
+    height: 6px;
+    background: var(--color-border);
+    overflow: hidden;
+}
+
+.meter-fill {
+    display: block;
+    height: 100%;
+    width: var(--pct);
+    background: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent-bright));
+    box-shadow: 0 0 14px var(--color-accent-glow);
+    transform-origin: left;
+    animation: meter-grow 1s var(--ease) both;
+}
+
+@keyframes meter-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+.meter-note {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin-top: 1.5rem;
+}
+
+.related {
+    border-top: 1px solid var(--color-border);
+    padding-block: 3.5rem 1rem;
+}
+
+@media (max-width: 960px) {
+    .vehicle-hero {
+        grid-template-columns: 1fr;
+    }
+    .vehicle-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .vg-thumb span { display: none; }
+    .vg-nav { width: 38px; height: 38px; }
+}
+
+/* ==========================================================================
+   v8 page additions: hero image, services process, about lists, detail
+   buy panel
+   ========================================================================== */
+
+/* -- Home hero: vehicle first ---------------------------------------------- */
+.hero-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-areas:
+        "text media"
+        "facts facts";
+    gap: 2.5rem 3rem;
+    align-items: center;
+}
+
+.hero-text { grid-area: text; }
+.hero-media { grid-area: media; }
+.hero-facts { grid-area: facts; }
+
+.hero-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-plate-b);
+    box-shadow: var(--shadow-card), 0 0 70px -24px var(--color-accent-glow);
+}
+
+.hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+}
+
+.hero-media:hover img { transform: scale(1.04); }
+
+.hero-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(10, 10, 11, 0.88));
+    pointer-events: none;
+}
+
+.hero-media-caption {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 1.1rem;
+    z-index: 2;
+    color: var(--color-on-image);
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.hero-media-caption small {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-on-image-accent);
+}
+
+.hero-media-link { font-family: var(--font-body); font-size: 0.88rem; color: var(--color-on-image-muted); }
+
+.hero-media:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+
+.hero-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    border-top: 2px solid var(--color-accent);
+    padding-top: 1.5rem;
+}
+
+.hero-facts .value { font-family: var(--font-display); font-size: 1.5rem; display: block; }
+.hero-facts .label { font-size: 0.92rem; color: var(--color-text-muted); margin-top: 0.2rem; display: block; max-width: 34ch; }
+
+@media (max-width: 860px) {
+    /* Vehicle first on small screens: photo, then headline + buttons, then facts */
+    .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: "media" "text" "facts";
+        gap: 1.5rem;
+    }
+    .hero-media { aspect-ratio: 16 / 10; }
+    .hero-facts { grid-template-columns: 1fr; gap: 1rem; }
+    .hero-facts li { display: grid; }
+}
+
+/* -- Services: process -------------------------------------------------------- */
+.process-section .section-heading { max-width: 30ch; margin-bottom: 2rem; }
+.process-section .eyebrow { display: block; margin-bottom: 0.6rem; }
+
+.process-steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.process-steps li { border-top: 2px solid var(--color-accent); padding-top: 1rem; }
+.process-steps h3 { font-size: 1.2rem; margin: 0.4rem 0; }
+.process-steps p { color: var(--color-text-muted); font-size: 0.95rem; }
+
+.step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-accent-bright);
+    color: var(--color-accent-text);
+    font-weight: 600;
+    border-radius: 50%;
+}
+
+
+@media (max-width: 860px) { .process-steps { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .process-steps { grid-template-columns: 1fr; } }
+
+/* -- About ------------------------------------------------------------------------ */
+.about-note {
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 80ch;
+}
+
+.about-list { display: grid; gap: 0.9rem; }
+.about-list li { color: var(--color-text-muted); padding-left: 1rem; border-left: 2px solid var(--color-accent-bright); }
+.about-list strong { color: var(--color-text); }
+
+/* -- Vehicle detail: buy panel, notes -------------------------------------------- */
+.vehicle-meta-row { flex-wrap: wrap; align-items: center; }
+
+.buy-panel {
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    padding: 1.1rem 1.25rem;
+}
+
+.buy-price { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.2rem); line-height: 1.1; }
+.buy-price.is-request { font-family: var(--font-body); font-size: 1.15rem; font-weight: 600; }
+
+.buy-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 0.9rem 0 0; }
+.buy-facts dt { font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); }
+.buy-facts dd { margin: 0.15rem 0 0; font-weight: 600; font-size: 0.95rem; }
+
+@media (max-width: 520px) { .buy-facts { grid-template-columns: 1fr 1fr; } }
+
+.vg-note { font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.8rem; max-width: 70ch; }
+
+.spec-table th { font-weight: 400; text-align: left; padding: 0.9rem 0; font-size: 0.92rem; color: var(--color-text-muted); width: 45%; }
+.spec-table td:last-child { font-family: var(--font-display); }
+.spec-table td:first-child { width: auto; color: var(--color-text); }
+
+.breadcrumb a { text-decoration: underline; text-underline-offset: 3px; }
+
+.page-header .demo-note { margin-top: 1rem; }
+
+@media (max-width: 860px) {
+    .hero-media-link { display: none; }
+    .hero-media-caption { bottom: 0.8rem; }
+}
+
+
+/* -- Page banners (v9) ---------------------------------------------------------
+   Photo banner behind each inner page's heading. The photo is set inline on
+   .page-banner (background-image) and --banner-pos picks the focal point.
+   The overlay is always dark, so the text is always light, in both themes. */
+.page-banner {
+    position: relative;
+    isolation: isolate;
+    background-color: #0a0a0b;
+    background-size: cover;
+    background-position: var(--banner-pos, center);
+    background-repeat: no-repeat;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(10, 10, 11, 0.93) 0%, rgba(10, 10, 11, 0.74) 45%, rgba(10, 10, 11, 0.28) 100%),
+        linear-gradient(0deg, rgba(10, 10, 11, 0.55), transparent 45%);
+}
+
+.page-banner .page-header {
+    border-bottom: 0;
+    padding-block: 5.5rem 4rem;
+}
+
+.page-banner h1 { color: var(--color-on-image); }
+.page-banner .eyebrow { color: var(--color-on-image-accent); }
+.page-banner .section-intro,
+.page-banner .demo-note { color: var(--color-on-image-muted); }
+.page-banner .text-link { color: var(--color-on-image); }
+
+@media (max-width: 760px) {
+    .page-banner::before { background: linear-gradient(0deg, rgba(10, 10, 11, 0.9), rgba(10, 10, 11, 0.7)); }
+    .page-banner .page-header { padding-block: 3.5rem 2.5rem; }
+}
+
+/* -- Services: "Request a test drive" button ------------------------------------
+   The row is a 3-column grid (index | title | text). The button sits in the
+   text column directly under the paragraph instead of wrapping into the
+   narrow index column. */
+.service-row { row-gap: 1.25rem; }
+
+.service-row .service-cta {
+    grid-column: 3;
+    justify-self: start;
+    margin-top: 0;
+}
+
+@media (max-width: 760px) {
+    .service-row .service-cta { grid-column: 1; }
+}
