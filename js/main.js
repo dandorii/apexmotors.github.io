@@ -4,11 +4,12 @@ import { vehicles } from "./data/vehicles.js";
 import { initInventoryPage } from "./pages/inventory.js";
 import { initVehicleDetailPage } from "./pages/vehicleDetail.js";
 import { initContactPage } from "./pages/contact.js";
-import { initTheme } from "./components/theme.js";
 import { renderGallery, initLightbox } from "./components/gallery.js";
+import { initThemeToggle } from "./components/theme.js";
+import { initAnimations } from "./components/animations.js";
 
-// The home page highlights a hand-picked few rather than the whole
-// collection, so it reads as a curated preview instead of a duplicate of
+// The home page highlights a short selection rather than the whole
+// collection, so it reads as a preview instead of a duplicate of
 // the inventory page. Update this list (not vehicles.js) to change which
 // vehicles are featured — see README.md "How to add a vehicle".
 const FEATURED_VEHICLE_IDS = ["ferrari-296-gtb", "porsche-911-gt3-rs", "lamborghini-revuelto"];
@@ -39,7 +40,7 @@ function initGalleryPage() {
 // so it's safe to call all of them unconditionally here rather than
 // maintaining a per-page list of "which script goes with which HTML file".
 document.addEventListener("DOMContentLoaded", () => {
-    initTheme();
+    initThemeToggle();
     initNavigation();
     highlightCurrentPage();
     renderFeaturedVehicles();
@@ -47,4 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initVehicleDetailPage();
     initGalleryPage();
     initContactPage();
+    // Last, so cards and tiles rendered above are picked up by the reveal.
+    initAnimations();
 });

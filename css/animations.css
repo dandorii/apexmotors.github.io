@@ -1,0 +1,319 @@
+/* ==========================================================================
+   APEX MOTORS — Motion
+   Everything that moves lives here. Scroll-reveal is progressive
+   enhancement: elements are only hidden when <html class="js"> is set by the
+   inline script in <head>, so the site stays fully readable without JS.
+   All motion is switched off by the prefers-reduced-motion rule in main.css.
+   ========================================================================== */
+
+/* -- Page load ----------------------------------------------------------- */
+
+body {
+    animation: page-in 0.6s var(--ease) both;
+}
+
+@keyframes page-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* -- Smooth theme switch -------------------------------------------------
+   theme.js puts .theme-transition on <html> for a moment while switching,
+   so every colour cross-fades instead of snapping. */
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+    transition: background-color 0.45s var(--ease), color 0.45s var(--ease),
+        border-color 0.45s var(--ease), fill 0.45s var(--ease), stroke 0.45s var(--ease),
+        box-shadow 0.45s var(--ease) !important;
+}
+
+/* -- Scroll progress bar -------------------------------------------------- */
+
+.scroll-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-bright), var(--color-accent-text));
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+/* -- Header settles when you scroll --------------------------------------- */
+
+.nav {
+    transition: padding var(--duration) var(--ease);
+}
+
+.site-header.is-scrolled .nav {
+    padding-block: 0.7rem;
+}
+
+/* -- Hero entrance (pure CSS, staggered) ------------------------------------ */
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes line-draw {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@keyframes visual-in {
+    from { opacity: 0; clip-path: inset(0 0 100% 0); transform: scale(1.06); }
+    to { opacity: 1; clip-path: inset(0 0 0 0); transform: scale(1); }
+}
+
+@keyframes glow-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(-3%, 4%, 0) scale(1.12); }
+}
+
+.hero::before {
+    animation: glow-drift 14s ease-in-out infinite alternate;
+}
+
+.hero-eyebrow { animation: rise 0.8s var(--ease-out) 0.05s both; }
+.hero-eyebrow::before { animation: line-draw 0.9s var(--ease-out) 0.4s both; }
+.hero-title { animation: rise 1s var(--ease-out) 0.15s both; }
+.hero-copy { animation: rise 0.9s var(--ease-out) 0.35s both; }
+.hero-actions { animation: rise 0.9s var(--ease-out) 0.5s both; }
+.hero-visual { animation: visual-in 1.3s var(--ease-out) 0.25s both; }
+
+.hero-info-item {
+    animation: rise 0.8s var(--ease-out) both;
+}
+.hero-info-item:nth-child(1) { animation-delay: 0.7s; }
+.hero-info-item:nth-child(2) { animation-delay: 0.8s; }
+.hero-info-item:nth-child(3) { animation-delay: 0.9s; }
+
+/* Gentle idle float on the hero photo's caption arrow */
+.hero-visual-caption small {
+    transition: letter-spacing 0.5s var(--ease-out);
+}
+
+.hero-visual:hover .hero-visual-caption small {
+    letter-spacing: 0.14em;
+}
+
+/* -- Scroll reveal ----------------------------------------------------------
+   data-reveal is added by animations.js; --reveal-delay staggers siblings. */
+
+html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+html.js [data-reveal="left"] { transform: translateX(-32px); }
+html.js [data-reveal="right"] { transform: translateX(32px); }
+html.js [data-reveal="zoom"] { transform: scale(0.94); }
+html.js [data-reveal="fade"] { transform: none; }
+
+html.js [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+}
+
+/* After the entrance finishes, drop will-change and the delay so hover
+   transitions on cards and buttons respond instantly. */
+html.js [data-reveal].is-settled {
+    will-change: auto;
+    transition-delay: 0ms;
+}
+
+.vehicle-card[data-reveal].is-settled {
+    transition: border-color var(--duration) var(--ease), transform 0.5s var(--ease-out),
+        box-shadow 0.5s var(--ease-out), opacity 0.3s var(--ease);
+}
+
+/* Eyebrow rule draws itself when its section scrolls in */
+html.js .eyebrow::before {
+    transform: scaleX(0);
+    transition: transform 0.9s var(--ease-out) 0.25s;
+}
+
+html.js .eyebrow.is-revealed::before,
+html.js .is-revealed .eyebrow::before {
+    transform: scaleX(1);
+}
+
+/* Table rows on the vehicle page */
+html.js .spec-table tr[data-reveal] {
+    transform: translateX(-18px);
+}
+html.js .spec-table tr[data-reveal].is-revealed {
+    transform: none;
+}
+
+/* -- Lightbox ----------------------------------------------------------------- */
+
+.lightbox.is-open {
+    animation: fade-in 0.3s var(--ease) both;
+}
+
+.lightbox.is-open .lightbox-panel {
+    animation: panel-in 0.5s var(--ease-out) both;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes panel-in {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+}
+
+.lightbox-close {
+    transition: transform 0.4s var(--ease-out), border-color var(--duration) var(--ease);
+}
+
+.lightbox-close:hover {
+    transform: rotate(90deg);
+    border-color: var(--color-accent-bright);
+}
+
+/* -- Forms ----------------------------------------------------------------------- */
+
+.form-status.is-visible {
+    animation: rise 0.5s var(--ease-out) both;
+}
+
+.form-field[data-invalid="true"] input,
+.form-field[data-invalid="true"] select,
+.form-field[data-invalid="true"] textarea {
+    animation: shake 0.45s var(--ease);
+}
+
+.form-field[data-test-drive]:not([hidden]),
+.form-hint[data-test-drive]:not([hidden]) {
+    animation: rise 0.5s var(--ease-out) both;
+}
+
+.form-error:not(:empty) {
+    animation: fade-in 0.3s var(--ease) both;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+}
+
+/* -- Map ----------------------------------------------------------------------------- */
+
+@keyframes map-shimmer {
+    from { background-position: 200% 0, 0 0; }
+    to { background-position: -200% 0, 0 0; }
+}
+
+@keyframes pin-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(196, 41, 59, 0.55); }
+    70% { box-shadow: 0 0 0 12px rgba(196, 41, 59, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(196, 41, 59, 0); }
+}
+
+/* -- Reduced motion: show everything immediately --------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    html.js [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .hero::before,
+    .map-frame,
+    .map-pin::before {
+        animation: none !important;
+    }
+}
+
+/* Hover must beat the reveal's end state (which sets transform: none). */
+html.js .vehicle-card[data-reveal].is-revealed:hover {
+    transform: translateY(-6px);
+}
+
+/* -- Red hover frame ------------------------------------------------------------
+   A red outline that draws itself around a card or photo tile on hover
+   (top, right, bottom, left in turn), with a soft red glow. It is a
+   pseudo-element, so it sits on top of the photo without changing layout. */
+
+:root {
+    --frame-color: #e23a4f;
+    --frame-glow: rgba(226, 58, 79, 0.38);
+}
+
+:root[data-theme="light"] {
+    --frame-color: #b5222f;
+    --frame-glow: rgba(181, 34, 47, 0.28);
+}
+
+.vehicle-card,
+.hero-visual {
+    position: relative;
+}
+
+.vehicle-card::after,
+.gallery-item::after,
+.view-tab::after,
+.hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    z-index: 3;
+    background:
+        linear-gradient(var(--frame-color), var(--frame-color)) 0 0 / 0 2px no-repeat,
+        linear-gradient(var(--frame-color), var(--frame-color)) 100% 0 / 2px 0 no-repeat,
+        linear-gradient(var(--frame-color), var(--frame-color)) 100% 100% / 0 2px no-repeat,
+        linear-gradient(var(--frame-color), var(--frame-color)) 0 100% / 2px 0 no-repeat;
+    transition: background-size 0.12s linear;
+}
+
+.vehicle-card:hover::after,
+.vehicle-card:focus-within::after,
+.gallery-item:hover::after,
+.gallery-item:focus-visible::after,
+.view-tab:hover::after,
+.view-tab:focus-visible::after,
+.hero-visual:hover::after,
+.hero-visual:focus-visible::after {
+    background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
+    /* The four sides are drawn one after another: top, right, bottom, left. */
+    animation: frame-draw 0.8s var(--ease-out) both;
+}
+
+@keyframes frame-draw {
+    0%   { background-size: 0 2px, 2px 0, 0 2px, 2px 0; }
+    25%  { background-size: 100% 2px, 2px 0, 0 2px, 2px 0; }
+    50%  { background-size: 100% 2px, 2px 100%, 0 2px, 2px 0; }
+    75%  { background-size: 100% 2px, 2px 100%, 100% 2px, 2px 0; }
+    100% { background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%; }
+}
+
+/* Red glow and border tint on the element itself */
+html.js .vehicle-card[data-reveal].is-revealed:hover,
+.vehicle-card:hover {
+    border-color: var(--frame-color);
+    box-shadow: var(--shadow-card), 0 0 30px -4px var(--frame-glow);
+}
+
+.gallery-item:hover,
+.gallery-item:focus-visible {
+    box-shadow: inset 0 0 0 1px var(--frame-color), 0 0 26px -4px var(--frame-glow);
+}
+
+.hero-visual:hover {
+    border-color: var(--frame-color);
+    box-shadow: var(--shadow-card), 0 0 34px -4px var(--frame-glow);
+}

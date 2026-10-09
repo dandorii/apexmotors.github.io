@@ -8,51 +8,74 @@
 :root {
     color-scheme: dark;
 
-    /* -- Color tokens (DARK, the default) ------------------------------
-       Every text token below is checked against WCAG AA (4.5:1) on bg,
-       surface and surface-alt; see README "Accessibility". */
+    /* -- Color tokens (dark theme is the default) ------------------------- */
     --color-bg: #0a0a0b;
     --color-surface: #141416;
     --color-surface-alt: #1a1a1d;
-    --color-border: rgba(236, 233, 229, 0.14);
-    --color-border-strong: rgba(236, 233, 229, 0.3);
-    --color-border-button: rgba(236, 233, 229, 0.6); /* outline buttons, inputs */
-    --color-text: #ece9e5;
-    --color-text-muted: #b9b6af;   /* was #9a978f */
-    --color-text-faint: #9f9c95;   /* was #67645e (3.2:1, failed AA) */
-    --color-accent: #c1202f;       /* fills and decoration only */
-    --color-accent-bright: #e8384d;/* large text, borders, glows */
-    --color-accent-text: #ff7184;  /* SMALL red text: labels, links, errors */
-    --color-accent-deep: #8f1523;
+    --color-border: rgba(232, 230, 227, 0.12);
+    --color-border-strong: rgba(232, 230, 227, 0.22);
+    --color-text: #e8e6e3;
+    --color-text-muted: #9a978f;
+    --color-text-faint: #67645e;
+    --color-accent: #a11d2c;
+    --color-accent-bright: #c4293b;
     --color-accent-dim: #3a0e14;
-    --color-accent-glow: rgba(232, 56, 77, 0.45);
-    --color-focus: #ffb4a8;
-    --color-btn-top: #cc2639;      /* primary button gradient; white text >= 5.4:1 */
-    --color-on-accent: #ffffff;
+    /* Dark red stays an accent (fills, rules). Small red text uses the lighter
+       --color-accent-text so it stays readable on the dark background. */
+    --color-accent-text: #f0707e;
+    --color-text-strong: #f8f5f2;
+    --color-border-emphasis: rgba(232, 230, 227, 0.55);
+    --color-focus: #e8b4ab;
 
-    /* Text that always sits on a dark photo overlay, in either theme */
-    --color-on-image: #f4f1ed;
-    --color-on-image-muted: #d3d0ca;
-    --color-on-image-accent: #ff8d9c;
-    --hero-glow-1: rgba(232, 56, 77, 0.30);
-    --hero-glow-2: rgba(232, 56, 77, 0.16);
-
+    /* Chrome that changes with the theme */
     --color-header-bg: rgba(10, 10, 11, 0.86);
-    --color-header-bg-solid: #0a0a0b;
-    --color-scrim: rgba(6, 6, 7, 0.9);
-    --color-tint: rgba(232, 56, 77, 0.12);       /* subtle red wash */
-    --color-tint-strong: rgba(232, 56, 77, 0.22);
-    --color-plate-a: #1c1c1f;
-    --color-plate-b: #101012;
-    --color-success: #8fdca6;
+    --color-lightbox-bg: rgba(6, 6, 7, 0.92);
+    --color-badge-bg: rgba(10, 10, 11, 0.78);
+    --shadow-pop: 0 24px 40px rgba(0, 0, 0, 0.55);
+    --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.45);
+    --hero-glow-a: rgba(161, 29, 44, 0.22);
+    --hero-glow-b: rgba(161, 29, 44, 0.1);
+    --map-filter: invert(0.92) hue-rotate(180deg) contrast(0.88) saturate(0.7);
+
+    /* Status + feedback colors */
+    --status-available: #86d39b;
+    --status-reserved: #f0c36d;
+    --status-sold: #b9b5ae;
     --color-success-border: #3f7d52;
-    --color-warning: #f2c36b;
-    --color-sold: #c9c6c0;
-    --shadow-card: 0 26px 50px -22px rgba(0, 0, 0, 0.9);
+    --color-success-text: #bfe3cb;
+    --color-error-text: #f2c4c4;
+
+    /* Text that sits on top of photos always stays light, in both themes,
+       because the photo scrims are always dark. */
+    --color-on-photo: #f8f5f2;
+    --color-on-photo-muted: rgba(248, 245, 242, 0.8);
+    --color-on-photo-accent: #f0707e;
+    --color-on-photo-border: rgba(248, 245, 242, 0.35);
 
     /* -- Type ------------------------------------------------------------ */
     --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
     --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    /* Type scale. Display > H1 > H2 > H3 > H4 > lead > body > small > label.
+       Every heading and text style in the site pulls from these tokens. */
+    --fs-display: clamp(2.9rem, 6.6vw, 5.25rem);
+    --fs-h1: clamp(2.3rem, 4.8vw, 3.6rem);
+    --fs-h2: clamp(1.8rem, 3.2vw, 2.6rem);
+    --fs-h3: clamp(1.2rem, 1.7vw, 1.4rem);
+    --fs-h4: 1.0625rem;
+    --fs-lead: clamp(1.08rem, 1.5vw, 1.2rem);
+    --fs-body: 1rem;
+    --fs-small: 0.875rem;
+    --fs-label: 0.75rem;
+
+    --lh-display: 1.03;
+    --lh-heading: 1.12;
+    --lh-snug: 1.3;
+    --lh-body: 1.65;
+
+    --tracking-display: -0.025em;
+    --tracking-heading: -0.015em;
+    --tracking-label: 0.14em;
 
     /* -- Layout ----------------------------------------------------------- */
     --max-width: 1240px;
@@ -61,87 +84,47 @@
 
     /* -- Motion ------------------------------------------------------------ */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --duration: 0.35s;
-    --shadow-red: 0 10px 28px -8px rgba(232, 56, 77, 0.55);
 }
 
-/* -- LIGHT theme -----------------------------------------------------------
-   Applied when the user picks it (data-theme="light") or, with no stored
-   choice, when the OS prefers light. The same token set is declared twice
-   (CSS can't share one block between a media query and an attribute
-   selector without a build step), so edit both together. */
+/* -- Light theme ------------------------------------------------------------
+   Applied with <html data-theme="light">. Only tokens change; no component
+   needs to know which theme is active. */
 :root[data-theme="light"] {
     color-scheme: light;
-    --color-bg: #ffffff;
-    --color-surface: #f6f4f1;
-    --color-surface-alt: #ece8e3;
-    --color-border: rgba(23, 23, 26, 0.14);
-    --color-border-strong: rgba(23, 23, 26, 0.3);
-    --color-border-button: rgba(23, 23, 26, 0.62);
-    --color-text: #17171a;
-    --color-text-muted: #46433d;
-    --color-text-faint: #66625b;
-    --color-accent: #b3202f;
-    --color-accent-bright: #c4283a;
-    --color-accent-text: #a51c2b;
-    --color-accent-deep: #8f1523;
-    --color-accent-dim: #fbe9ec;
-    --color-accent-glow: rgba(179, 32, 47, 0.28);
-    --color-focus: #1a4fd6;
-    --color-btn-top: #c4283a;
-    --color-header-bg: rgba(255, 255, 255, 0.9);
-    --color-header-bg-solid: #ffffff;
-    --color-scrim: rgba(14, 14, 16, 0.78);
-    --color-tint: rgba(179, 32, 47, 0.07);
-    --color-tint-strong: rgba(179, 32, 47, 0.14);
-    --color-plate-a: #e9e5e0;
-    --color-plate-b: #d9d4cd;
-    --color-success: #1d6b3a;
-    --color-success-border: #2f8a50;
-    --color-warning: #7a5200;
-    --color-sold: #5c5952;
-    --shadow-card: 0 22px 44px -24px rgba(23, 23, 26, 0.35);
-    --shadow-red: 0 10px 24px -10px rgba(179, 32, 47, 0.5);
-    --hero-glow-1: rgba(179, 32, 47, 0.14);
-    --hero-glow-2: rgba(179, 32, 47, 0.08);
-}
 
-@media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) {
-        color-scheme: light;
-        --color-bg: #ffffff;
-        --color-surface: #f6f4f1;
-        --color-surface-alt: #ece8e3;
-        --color-border: rgba(23, 23, 26, 0.14);
-        --color-border-strong: rgba(23, 23, 26, 0.3);
-        --color-border-button: rgba(23, 23, 26, 0.62);
-        --color-text: #17171a;
-        --color-text-muted: #46433d;
-        --color-text-faint: #66625b;
-        --color-accent: #b3202f;
-        --color-accent-bright: #c4283a;
-        --color-accent-text: #a51c2b;
-        --color-accent-deep: #8f1523;
-        --color-accent-dim: #fbe9ec;
-        --color-accent-glow: rgba(179, 32, 47, 0.28);
-        --color-focus: #1a4fd6;
-        --color-btn-top: #c4283a;
-        --color-header-bg: rgba(255, 255, 255, 0.9);
-        --color-header-bg-solid: #ffffff;
-        --color-scrim: rgba(14, 14, 16, 0.78);
-        --color-tint: rgba(179, 32, 47, 0.07);
-        --color-tint-strong: rgba(179, 32, 47, 0.14);
-        --color-plate-a: #e9e5e0;
-        --color-plate-b: #d9d4cd;
-        --color-success: #1d6b3a;
-        --color-success-border: #2f8a50;
-        --color-warning: #7a5200;
-        --color-sold: #5c5952;
-        --shadow-card: 0 22px 44px -24px rgba(23, 23, 26, 0.35);
-        --shadow-red: 0 10px 24px -10px rgba(179, 32, 47, 0.5);
-        --hero-glow-1: rgba(179, 32, 47, 0.14);
-        --hero-glow-2: rgba(179, 32, 47, 0.08);
-    }
+    --color-bg: #f7f4ef;
+    --color-surface: #ffffff;
+    --color-surface-alt: #efebe4;
+    --color-border: rgba(26, 22, 18, 0.12);
+    --color-border-strong: rgba(26, 22, 18, 0.24);
+    --color-text: #1f1c19;
+    --color-text-muted: #5a564f;
+    --color-text-faint: #6f6b64;
+    --color-accent: #a11d2c;
+    --color-accent-bright: #b5222f;
+    --color-accent-dim: #f3d9dc;
+    --color-accent-text: #a11d2c;
+    --color-text-strong: #0f0d0c;
+    --color-border-emphasis: rgba(26, 22, 18, 0.55);
+    --color-focus: #a11d2c;
+
+    --color-header-bg: rgba(247, 244, 239, 0.86);
+    --color-lightbox-bg: rgba(24, 20, 17, 0.72);
+    --color-badge-bg: rgba(255, 255, 255, 0.92);
+    --shadow-pop: 0 24px 40px rgba(40, 28, 20, 0.18);
+    --shadow-card: 0 18px 40px rgba(40, 28, 20, 0.14);
+    --hero-glow-a: rgba(161, 29, 44, 0.12);
+    --hero-glow-b: rgba(161, 29, 44, 0.06);
+    --map-filter: none;
+
+    --status-available: #1b6a39;
+    --status-reserved: #8a5a00;
+    --status-sold: #5a564f;
+    --color-success-border: #2f7a47;
+    --color-success-text: #1d5c33;
+    --color-error-text: #8c1a27;
 }
 
 /* -- Reset ---------------------------------------------------------------- */
@@ -153,6 +136,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* keeps anchor targets clear of the sticky header */
 }
 
 body {
@@ -160,9 +144,10 @@ body {
     background: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
 }
 
@@ -187,16 +172,46 @@ ul {
     padding: 0;
 }
 
+/* Heading hierarchy. Bare elements get a sensible default so an unstyled
+   heading is never visually out of order; classes below (.hero-title,
+   .page-title, .section-heading) only pick which step of the scale to use. */
 h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 500;
-    line-height: 1.1;
+    font-optical-sizing: auto;
+    color: var(--color-text-strong);
     margin: 0;
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-heading);
+    letter-spacing: var(--tracking-display);
+}
+
+h2 {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-heading);
+    letter-spacing: var(--tracking-heading);
+}
+
+h3 {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-snug);
     letter-spacing: -0.01em;
+}
+
+h4 {
+    font-family: var(--font-body);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    line-height: var(--lh-snug);
 }
 
 p {
     margin: 0;
+    text-wrap: pretty;
 }
 
 /* Respect reduced-motion preference across the site */
@@ -243,23 +258,55 @@ select:focus-visible {
     padding-inline: var(--gutter);
 }
 
-.eyebrow {
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-accent-text);
+/* Eyebrow: the small uppercase label that sits above a heading. */
+.eyebrow,
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-body);
+    font-size: var(--fs-label);
     font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: var(--color-accent-text);
+    margin-bottom: 1rem;
 }
 
+.eyebrow::before,
+.hero-eyebrow::before {
+    content: "";
+    flex: none;
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left center;
+}
+
+/* H1 on inner pages. */
+.page-title {
+    font-size: var(--fs-h1);
+    max-width: 22ch;
+}
+
+/* H2 for page sections. */
 .section-heading {
-    font-size: clamp(1.9rem, 3.5vw, 2.75rem);
-    max-width: 20ch;
+    font-size: var(--fs-h2);
+    max-width: 22ch;
 }
 
+/* Supporting copy under a heading. */
 .section-intro {
     color: var(--color-text-muted);
-    max-width: 56ch;
-    font-size: 1.05rem;
+    max-width: 58ch;
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+}
+
+/* Body copy that needs a comfortable measure. */
+.prose {
+    max-width: 65ch;
 }
 
 /* ==========================================================================
@@ -273,7 +320,11 @@ select:focus-visible {
     background: var(--color-header-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 1px 0 var(--color-tint-strong);
+    transition: box-shadow var(--duration) var(--ease), background var(--duration) var(--ease);
+}
+
+.site-header.is-scrolled {
+    box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.6);
 }
 
 .nav {
@@ -292,7 +343,9 @@ select:focus-visible {
 
 .nav-brand-mark {
     font-size: 1.35rem;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-text-strong);
 }
 
 .nav-brand-mark span {
@@ -301,7 +354,7 @@ select:focus-visible {
 
 .nav-brand-place {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--color-text-faint);
     letter-spacing: 0.08em;
     margin-top: 0.3rem;
@@ -314,193 +367,279 @@ select:focus-visible {
 }
 
 .nav-links a {
-    font-size: 0.92rem;
+    font-size: var(--fs-small);
+    font-weight: 500;
     color: var(--color-text-muted);
     transition: color var(--duration) var(--ease);
     position: relative;
     padding-block: 0.25rem;
 }
 
-.nav-links a:hover,
-.nav-links a[aria-current="page"] {
+/* Underline that draws in from the left on hover and stays for the
+   current page. */
+.nav-links a:not(.nav-cta)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: var(--color-accent-bright);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s var(--ease-out);
+}
+
+.nav-links a:not(.nav-cta):hover::after {
+    transform: scaleX(1);
+}
+
+.nav-links a:hover {
     color: var(--color-text);
 }
 
-.nav-links a:not(.nav-cta)::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 100%;
-    bottom: -2px;
-    height: 2px;
-    background: var(--color-accent-bright);
-    transition: right var(--duration) var(--ease);
-}
-
-.nav-links a:not(.nav-cta):hover::before {
-    right: 0;
+.nav-links a[aria-current="page"] {
+    color: var(--color-text-strong);
+    font-weight: 500;
 }
 
 .nav-links a[aria-current="page"]::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 2px;
-    background: var(--color-accent-bright);
+    transform: scaleX(1);
 }
 
-.nav-links a.nav-cta {
-    background: linear-gradient(180deg, var(--color-btn-top), var(--color-accent) 60%, var(--color-accent-deep));
-    border: 1px solid var(--color-accent-bright);
-    padding: 0.6rem 1.25rem;
-    font-size: 0.85rem;
+.nav-links .nav-cta {
+    padding: 0.7rem 1.35rem;
+    font-size: var(--fs-small);
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--color-on-accent);
-    box-shadow: 0 6px 18px -6px var(--color-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
-        filter var(--duration) var(--ease);
+    letter-spacing: 0.01em;
+    color: #fff;
+    border: 1px solid rgba(220, 70, 85, 0.65);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #cc2b3f 0%, #c4293b 55%, #9c1b2a 100%);
+    box-shadow: 0 6px 22px rgba(196, 41, 59, 0.35);
+    transition: background var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
+        transform var(--duration) var(--ease-out);
 }
 
-.nav-links a.nav-cta:hover {
-    color: var(--color-on-accent);
+.nav-links .nav-cta:hover,
+.nav-links .nav-cta:focus-visible {
+    background: linear-gradient(180deg, #d8344a 0%, #cc2b3f 55%, #a81e2e 100%);
+    box-shadow: 0 8px 28px rgba(196, 41, 59, 0.5);
+    color: #fff;
     transform: translateY(-1px);
-    filter: brightness(1.08);
-    box-shadow: 0 10px 24px -6px var(--color-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-.nav-links a.nav-cta[aria-current="page"]::after {
-    display: none;
+/* Theme toggle + hamburger live together on the right of the bar. */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
 }
+
+.theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
+}
+
+.theme-toggle:hover {
+    border-color: var(--color-accent-bright);
+    background: var(--color-surface);
+}
+
+.theme-toggle svg {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.55s var(--ease-out), opacity 0.35s var(--ease);
+}
+
+/* The icon shows the mode you will switch TO: moon in light, sun in dark. */
+.theme-toggle .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+.theme-toggle .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+
+:root[data-theme="light"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(90deg) scale(0.4); }
+:root[data-theme="light"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
 
 .nav-toggle {
     display: none;
-    background: var(--color-tint);
-    border: 1px solid var(--color-accent-bright);
-    border-radius: 4px;
-    width: 48px;
-    height: 44px;
+    background: none;
+    border: 1px solid var(--color-border-strong);
+    width: 42px;
+    height: 38px;
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: background var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
-        transform 0.15s var(--ease);
-}
-
-.nav-toggle:hover {
-    background: var(--color-tint-strong);
-}
-
-.nav-toggle:active {
-    transform: scale(0.94);
-}
-
-.nav-toggle[aria-expanded="true"] {
-    background: var(--color-accent);
-    border-color: var(--color-accent-bright);
-    box-shadow: 0 0 0 4px var(--color-tint-strong), var(--shadow-red);
-}
-
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars span {
-    background: #fff;
 }
 
 .nav-toggle-bars {
     position: relative;
-    width: 22px;
-    height: 14px;
+    width: 18px;
+    height: 12px;
 }
 
 .nav-toggle-bars span {
     position: absolute;
     left: 0;
     right: 0;
-    height: 2px;
-    border-radius: 2px;
+    height: 1px;
     background: var(--color-text);
     transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
 }
 
 .nav-toggle-bars span:nth-child(1) { top: 0; }
-.nav-toggle-bars span:nth-child(2) { top: 50%; margin-top: -1px; }
+.nav-toggle-bars span:nth-child(2) { top: 50%; margin-top: -0.5px; }
 .nav-toggle-bars span:nth-child(3) { bottom: 0; }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
+    transform: translateY(5.5px) rotate(45deg);
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(2) {
     opacity: 0;
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
+    transform: translateY(-5.5px) rotate(-45deg);
 }
 
 @media (max-width: 860px) {
-    /* backdrop-filter would make the header the containing block for the
-       fixed menu panel, collapsing it; use an opaque header here instead. */
-    .site-header {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        background: var(--color-header-bg-solid);
-    }
-
     .nav-toggle {
         display: flex;
+        transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
     }
 
+    .nav-toggle[aria-expanded="true"] {
+        border-color: var(--color-accent);
+        background: rgba(196, 41, 59, 0.08);
+    }
+
+    body.nav-open {
+        overflow: hidden;
+    }
+
+    /* The panel hangs off the bottom edge of the sticky header. It is
+       absolutely positioned (not fixed) because the header's
+       backdrop-filter would otherwise become the containing block for a
+       fixed child and break its offsets. */
     .nav-links {
-        position: fixed;
-        inset: 80px 0 0 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        background: var(--color-header-bg-solid);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: calc(100vh - 5rem);
+        max-height: calc(100dvh - 5rem);
         overflow-y: auto;
-        z-index: 99;
-        padding: 1rem var(--gutter) 2rem;
-        transform: translateY(-8px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: var(--color-surface);
+        padding: 0.35rem var(--gutter) 1.5rem;
         border-bottom: 1px solid var(--color-border);
+        box-shadow: var(--shadow-pop);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity var(--duration) var(--ease),
+                    transform var(--duration) var(--ease),
+                    visibility 0s linear var(--duration);
     }
 
     .nav-links.is-open {
         opacity: 1;
+        visibility: visible;
         transform: translateY(0);
         pointer-events: auto;
+        transition-delay: 0s;
     }
 
-    .nav-links a,
-    .nav-links .nav-cta {
-        width: 100%;
-        padding: 0.9rem 0;
-        border-bottom: 1px solid var(--color-border);
-        font-size: 1rem;
+    /* Rows: full-width, hairline dividers, generous tap targets. */
+    .nav-links li {
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
     }
 
-    .nav-links a:not(.nav-cta)::before,
-    .nav-links a[aria-current="page"]::after { display: none; }
-
-    .nav-links a[aria-current="page"] {
-        color: var(--color-text);
-        border-left: 3px solid var(--color-accent-bright);
-        padding-left: 0.9rem;
+    .nav-links.is-open li {
+        opacity: 1;
+        transform: none;
     }
 
-    .nav-links li { width: 100%; }
+    .nav-links.is-open li:nth-child(2) { transition-delay: 0.03s; }
+    .nav-links.is-open li:nth-child(3) { transition-delay: 0.06s; }
+    .nav-links.is-open li:nth-child(4) { transition-delay: 0.09s; }
+    .nav-links.is-open li:nth-child(5) { transition-delay: 0.12s; }
+    .nav-links.is-open li:nth-child(6) { transition-delay: 0.15s; }
+    .nav-links.is-open li:nth-child(7) { transition-delay: 0.18s; }
 
-    .nav-links a { display: block; }
-
-    .nav-links a.nav-cta {
-        margin-top: 1.25rem;
-        justify-content: center;
-        text-align: center;
+    .nav-links a {
         display: block;
-        padding: 1rem;
-        border-bottom: 1px solid var(--color-accent-bright);
+        width: 100%;
+        padding: 1rem 0;
+        font-size: 1rem;
+        border-bottom: 1px solid var(--color-border);
+        transition: color var(--duration) var(--ease), padding var(--duration) var(--ease);
+    }
+
+    .nav-links li:nth-last-child(2) a {
+        border-bottom-color: var(--color-border);
+    }
+
+    /* Current page: red bar on the left edge and an indented label,
+       replacing the desktop underline. */
+    .nav-links a[aria-current="page"] {
+        padding-left: 1rem;
+        border-left: 3px solid var(--color-accent-bright);
+    }
+
+    .nav-links a[aria-current="page"]::after,
+    .nav-links a:not(.nav-cta)::after {
+        display: none;
+    }
+
+    /* Call to action: full-width red button with a soft glow. */
+    .nav-links li:last-child {
+        margin-top: 1.25rem;
+    }
+
+    .nav-links .nav-cta {
+        padding: 1.05rem 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: #fff;
+        border: 1px solid rgba(220, 70, 85, 0.65);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, #cc2b3f 0%, #c4293b 55%, #9c1b2a 100%);
+        box-shadow: 0 6px 22px rgba(196, 41, 59, 0.35);
+    }
+
+    .nav-links .nav-cta:hover,
+    .nav-links .nav-cta:focus-visible {
+        background: linear-gradient(180deg, #d8344a 0%, #cc2b3f 55%, #a81e2e 100%);
+        box-shadow: 0 8px 28px rgba(196, 41, 59, 0.5);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-links,
+    .nav-links li {
+        transition: none !important;
     }
 }
 
@@ -523,33 +662,41 @@ select:focus-visible {
 
 .footer-brand {
     font-family: var(--font-display);
-    font-size: 1.3rem;
-    color: var(--color-text);
+    font-size: 1.5rem;
+    line-height: 1.1;
+    color: var(--color-text-strong);
 }
 
 .footer-tagline {
-    margin-top: 0.6rem;
-    font-size: 0.85rem;
-    max-width: 28ch;
+    margin-top: 0.75rem;
+    font-size: var(--fs-small);
+    max-width: 30ch;
 }
 
 .footer-col-title {
-    font-size: 0.78rem;
-    color: var(--color-text);
-    letter-spacing: 0.03em;
-    margin-bottom: 0.9rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-strong);
+    letter-spacing: var(--tracking-label);
+    margin-bottom: 1rem;
 }
 
 .footer-col a,
 .footer-col p {
     display: block;
-    font-size: 0.88rem;
-    margin-bottom: 0.55rem;
+    font-size: var(--fs-small);
+    margin-bottom: 0.6rem;
+}
+
+.footer-col a {
+    width: fit-content;
+    transition: color var(--duration) var(--ease), transform var(--duration) var(--ease-out);
 }
 
 .footer-col a:hover {
-    color: var(--color-accent-text);
-    text-decoration: underline;
+    color: var(--color-text-strong);
+    transform: translateX(4px);
 }
 
 .footer-bottom {
@@ -560,7 +707,7 @@ select:focus-visible {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.75rem;
-    font-size: 0.78rem;
+    font-size: var(--fs-label);
 }
 
 @media (max-width: 760px) {
@@ -568,79 +715,3 @@ select:focus-visible {
         grid-template-columns: 1fr 1fr;
     }
 }
-
-
-/* ==========================================================================
-   v8 additions: skip link, nav tools (theme toggle), footer demo note
-   ========================================================================== */
-
-.skip-link {
-    position: absolute;
-    left: 1rem;
-    top: -4rem;
-    z-index: 300;
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    padding: 0.75rem 1.1rem;
-    font-weight: 600;
-    transition: top 0.2s var(--ease);
-}
-
-.skip-link:focus {
-    top: 0.75rem;
-}
-
-/* Right-hand cluster: theme toggle + (mobile) menu button */
-.nav-tools {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--color-border-button);
-    border-radius: 4px;
-    background: transparent;
-    color: var(--color-text);
-    padding: 0;
-    transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease);
-}
-
-.theme-toggle:hover {
-    background: var(--color-tint);
-    border-color: var(--color-accent-bright);
-}
-
-.theme-toggle svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-/* Show the icon for the mode you would switch TO */
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
-:root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
-:root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
-@media (prefers-color-scheme: light) {
-    :root:not([data-theme]) .theme-toggle .icon-sun { display: none; }
-    :root:not([data-theme]) .theme-toggle .icon-moon { display: block; }
-}
-
-.footer-demo-note {
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    max-width: 60ch;
-}
-
-main:focus { outline: none; }

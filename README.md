@@ -1,6 +1,6 @@
 # Apex Motors — Dealership Website
 
-A multi-page static website for **Apex Motors**, a fictional premium
+A multi-page static website for **Apex Motors**, a fictional
 automotive dealership in San Fernando, Pampanga, Philippines. Built with
 plain HTML5, CSS3, and vanilla JavaScript (ES modules) — no frameworks,
 no bundler, no build step.
@@ -38,7 +38,7 @@ This is a static site with no build step or server-side requirement.
    any static file server for the most reliable experience:
 
    ```bash
-   cd apex_motors_v8
+   cd apex_motors_v5
    python3 -m http.server 8000
    ```
 
@@ -54,7 +54,7 @@ when the HTML is opened directly instead of served.
 ## Project structure
 
 ```
-apex_motors_v8/
+apex_motors_v5/
 ├── index.html              Home page
 ├── inventory.html          Filterable vehicle inventory
 ├── vehicle.html            Single vehicle detail page (reads ?id=... from the URL)
@@ -85,7 +85,7 @@ apex_motors_v8/
 │
 └── assets/
     ├── images/                One photo per vehicle (see below)
-    └── icons/                 Reserved for future icon assets (currently empty)
+    └── icons/                 Favicons (.ico + PNG), Apple touch icon, and 192px app icon
 ```
 
 ---
@@ -113,13 +113,10 @@ page, and gallery all read from this one array — there's no duplicated
 vehicle data anywhere else in the codebase. Updating a spec means
 editing one object in one file.
 
-**Verified specs only.** Apex Motors' stated policy (see the comment at
-the top of `vehicles.js`) is that only specifications the maintainer can
-verify are included. A field that isn't confirmed is left out of that
-vehicle's object entirely, rather than filled in with a guess or a
-placeholder. `vehicleDetail.js` renders `SPEC_ROWS` accordingly: a
-missing field simply produces no row, so the detail page never shows a
-blank value or "N/A".
+**Missing fields are skipped.** A field that isn't set is left out of that
+vehicle's object entirely rather than filled with a placeholder, and
+`vehicleDetail.js` renders `SPEC_ROWS` accordingly: a missing field simply
+produces no row, so the detail page never shows a blank value or "N/A".
 
 **Photo or spec plate, automatically.** Every vehicle card, the vehicle
 detail hero, and every gallery tile check for an `image` field on the
@@ -136,38 +133,41 @@ beyond adding or omitting the `image` field.
 
 | Page | File | What it does |
 |---|---|---|
-| Home | `index.html` | Hero, a hand-picked set of featured vehicles, "why us," a services preview, and a closing call to action. |
+| Home | `index.html` | Hero, a hero photo, a featured set of vehicles, "why us," a services preview, and a closing call to action. |
 | Inventory | `inventory.html` | The full vehicle collection with category and manufacturer filters, built dynamically from the dataset. |
 | Vehicle detail | `vehicle.html?id=<vehicle-id>` | One page that renders any vehicle, chosen via a `?id=` query parameter (e.g. `vehicle.html?id=porsche-911-gt3-rs`). Shows a "not found" state with a link back to inventory for an unknown or stale id. |
 | Gallery | `gallery.html` | A photo grid of the whole collection; selecting a tile opens a shared lightbox dialog with the vehicle's name, category, and description. |
 | About | `about.html` | Dealership story and philosophy. |
 | Services | `services.html` | What the dealership offers (sales, test drives, sourcing, trade-in and vehicle consultation). |
-| Contact | `contact.html` | A validated contact / test-drive request form. Arriving from a vehicle's "Book a Test Drive" link pre-fills the "vehicle of interest" field via a `?vehicle=` query parameter. |
+| Contact | `contact.html` | A validated contact / test-drive request form. Arriving from a vehicle's "Request a Test Drive" link pre-fills the "vehicle of interest" field via a `?vehicle=` query parameter. |
 
 ---
 
 ## The vehicle dataset
 
-`js/data/vehicles.js` exports `vehicles`, `STATUS`, `getVehicleById(id)` and
-`getUniqueValues(key)`. The header comment of that file is the reference for
-every field. In short (v8):
+`js/data/vehicles.js` exports:
 
-- **Specs are numbers in one unit each**: `powerHp` (hp), `torqueNm` (Nm),
-  `zeroToHundred` (s), `topSpeedKmh` (km/h), `weightKg` (kg, with a
-  `weightNote` such as "dry", "kerb (DIN)" or "approx."). Display text comes
-  from `js/utils/format.js`, so every page writes a figure the same way.
-  Metric PS/CV values were converted to hp (1 PS = 0.98632 hp).
-- **Buying info**: `price` (PHP, or `null` for "Price on request"),
-  `condition` (`"new"` or `"pre-owned"`), `mileageKm` (`null` for new) and
-  `status` (`"available"`, `"reserved"`, `"sold"`).
-  **These values are demo placeholders, not real stock.**
-- **Photos**: `image` is the main photo. `views` is an optional list of
-  `{ label, src }` for real extra photos (rear, interior, detail). Without
-  `views` the detail page shows labelled crops of the main photo and says so.
-  `photoCheck` is an optional note shown when the main photo may not match the
-  listed model; delete it once the photo is replaced.
+- **`vehicles`** — an array of vehicle objects. Each has, at minimum,
+  `id`, `manufacturer`, `model`, `category`, and `description`.
+  Everything else (`year`, `image`, `engine`, `power`, `torque`,
+  `transmission`, `drivetrain`, `zeroToHundred`, `topSpeed`, `weight`, `condition`, `mileage`, `availability`)
+  is optional and optional.
+- **`getVehicleById(id)`** — returns the matching vehicle object, or
+  `undefined` if no vehicle has that id. `vehicleDetail.js` uses the
+  `undefined` case to show its "vehicle not found" state rather than
+  throwing.
+- **`getUniqueValues(key)`** — returns the sorted, deduplicated set of
+  values for a field across all vehicles (e.g.
+  `getUniqueValues("category")`). `inventory.js` uses this to build the
+  category and manufacturer filter dropdowns directly from the data, so
+  a new category or manufacturer added to a vehicle automatically
+  becomes filterable with no HTML changes.
 
-Cars with real extra photos (rear + interior): all except the 911 GT3 RS.
+The collection currently includes 12 vehicles spanning Track Weapon,
+Supercar, Muscle, and Grand Tourer categories, each with a photo in
+`assets/images/`.
+
+---
 
 ## Common tasks
 
@@ -189,25 +189,9 @@ Cars with real extra photos (rear + interior): all except the 911 GT3 RS.
    - the gallery.
 4. To also show it on the home page, see the next section.
 
-### Add rear / interior photos to a vehicle
-
-Save the files in `assets/images/` (for example `ferrari-296-gtb-interior.jpg`)
-and add to that vehicle in `vehicles.js`:
-
-```js
-views: [
-    { label: "Rear", src: "assets/images/ferrari-296-gtb-rear.jpg" },
-    { label: "Interior", src: "assets/images/ferrari-296-gtb-interior.jpg" },
-],
-```
-
-The thumbnail switcher on the detail page and the thumbnails in the gallery
-viewer update automatically. Use photos you have the right to publish;
-1200 px wide or more looks best.
-
 ### Feature a vehicle on the home page
 
-The home page shows a short, curated subset rather than the full
+The home page shows a short, featured subset rather than the full
 collection. Open `js/main.js` and add the vehicle's `id` to the
 `FEATURED_VEHICLE_IDS` array near the top of the file:
 
@@ -218,6 +202,14 @@ const FEATURED_VEHICLE_IDS = ["ferrari-296-gtb", "porsche-911-gt3-rs", "lamborgh
 An id in this list that no longer matches a vehicle in `vehicles.js`
 (e.g. it was later removed) is silently skipped rather than producing a
 broken card.
+
+### Change a vehicle's status
+
+Each vehicle has `condition` (Brand-new / Pre-owned), `mileage`, and
+`availability` (Available / Reserved / Sold) in `js/data/vehicles.js`.
+These are demonstration values. They appear as a badge on cards and in
+the detail page specifications. Sold vehicles show "Ask About Similar
+Vehicles" instead of price and test drive requests.
 
 ### Replace or add a vehicle photo
 
@@ -278,25 +270,23 @@ HTML `style` attributes.
 
 ## Accessibility notes
 
-- **Contrast**: every text colour token is at least 4.5:1 against the
-  background, surface and alt-surface tokens in both themes (large text 3:1).
-  Red used for small text is the lighter `--color-accent-text`; the darker
-  accent is for fills and decoration. A browser script that checks the rendered
-  text on every page in both themes found no failures (text over photos is
-  excluded and sits on fixed dark overlays with light text).
-- **Themes**: dark is the default. With no saved choice the site follows the
-  system setting (`prefers-color-scheme`). The nav toggle stores the choice in
-  `localStorage` (key `apex-theme`); `js/theme-init.js` applies it before first
-  paint to avoid a flash. Light and dark token sets live at the top of
-  `css/main.css`; edit both together.
-- **Keyboard**: skip link, visible focus on everything, Escape closes the mobile
-  menu and the gallery viewer, the viewer traps focus and returns it to the tile,
-  arrow keys move between vehicles in the viewer and photos on the detail page.
-- **Forms**: errors appear in an error summary (focused on submit) and under each
-  field, with `aria-invalid` and `aria-describedby`; status text is announced via
-  `aria-live`. Status badges use text, not colour alone.
-- Navigation toggle is a real `<button>` with `aria-expanded`; the current page's
-  link has `aria-current="page"`.
+- The mobile nav toggle is a real `<button>` that manages
+  `aria-expanded`; CSS (not JS) handles the actual show/hide animation.
+- The current page's nav link gets `aria-current="page"`, computed at
+  runtime by comparing the URL to each link's `href` — this works
+  correctly even though every page shares the exact same header markup.
+- Gallery tiles are `<button>` elements (not `<div>`s with click
+  handlers), so the whole gallery is keyboard- and screen-reader
+  navigable without extra `tabindex`/`role` wiring.
+- The lightbox is a `role="dialog"` with `aria-modal="true"`; opening it
+  moves focus to its close button, and `Escape` or a click on the
+  backdrop closes it.
+- Contact form fields report errors through an associated
+  `role="alert"` element and a `data-invalid` attribute the stylesheet
+  uses for the visible error state, so the error is available to
+  assistive technology as well as sighted users.
+
+---
 
 ## Browser support notes
 
@@ -312,7 +302,7 @@ to support legacy browsers such as Internet Explorer.
 
 - **The contact form doesn't send anything anywhere.** There's no
   backend. Submitting a valid form simulates a network delay, then shows
-  a confirmation that says plainly it was not sent — nothing is stored or
+  a success message and resets the form — nothing is stored or
   transmitted. Wiring it to a real endpoint would mean replacing the
   `window.setTimeout` in `js/pages/contact.js`'s `handleSubmit` with an
   actual request (e.g. `fetch`), and handling that request's failure
@@ -328,41 +318,56 @@ to support legacy browsers such as Internet Explorer.
 
 ---
 
-## v7 design pass
+## Update: theme, motion, typography and map
 
-- **Red as a brand colour:** `--color-accent`/`--color-accent-bright` are brighter, with `--color-accent-glow` and `--shadow-red` tokens for glow.
-- **Buttons:** `.btn-primary` is a gradient with glow and a hover sheen; `.btn-outline` turns red on hover. The nav "Book a Test Drive" is solid red.
-- **Cards:** lift, red border and glow, image zoom, top bar and a "View details" pill on hover. The whole card is clickable.
-- **Vehicle detail:** image gallery, key stats, booking card, performance meters (parsed from the specs) and related vehicles.
-- **Real extra angles:** add `views: [{ label: "Front", src: "assets/images/<id>-front.jpg" }, ...]` to a vehicle in `js/data/vehicles.js`. Without `views`, the gallery shows the main photo plus close-up crops of it.
-- **Favicon:** `assets/icons/favicon.svg` (plus PNG fallbacks), linked from every page.
+**Light / dark mode.** A sun/moon button in the header switches themes. The
+choice is saved in `localStorage` (`apex-theme`); with no saved choice the
+site follows the visitor's system setting. A small inline script in each
+page's `<head>` sets `data-theme` before first paint, so there is no flash.
+All colours are tokens in `css/main.css`: dark values on `:root`, light
+overrides under `:root[data-theme="light"]`. Text that sits on photos uses
+the `--color-on-photo*` tokens so it stays light in both themes. Logic lives
+in `js/components/theme.js`.
 
+**Animations** (`css/animations.css`, `js/components/animations.js`):
+staggered hero entrance, scroll-reveal for sections/cards/rows (also for
+cards re-rendered by the inventory filters), card lift and photo zoom,
+button light-sweep, nav underline, header shrink and scroll-progress bar,
+hero photo parallax, animated eyebrow rules, lightbox open, form error
+shake, and a smooth colour cross-fade when switching themes. Everything is
+disabled by `prefers-reduced-motion`, and content stays visible without JS.
+
+**Typography.** One scale in `css/main.css` (`--fs-display`, `--fs-h1` to
+`--fs-h4`, `--fs-lead`, `--fs-body`, `--fs-small`, `--fs-label`) with
+matching line-height and tracking tokens. Page titles use `.page-title`
+(h1), section headings `.section-heading` (h2), and eyebrows/labels are
+uppercase with tracking. Bare `h1`-`h4` elements now have sensible defaults.
+
+**Map.** `contact.html` has a "Find the showroom" section with an embedded
+OpenStreetMap (no API key), directions and full-map links. The map is
+inverted to match dark mode. The pin marks the centre of San Fernando,
+Pampanga because the dealership is fictional; to point at a real address,
+change the `bbox` and `marker` values in the iframe `src` and the links.
 
 ---
 
-## v8 changes (review follow-up)
+## Update: interior and rear photos
 
-Contrast and a light theme; image-led home hero; price, condition, mileage and
-availability on every listing; one set of spec units; detail-page photo
-switcher with real rear/interior photos for four cars; gallery viewer with a
-large photo, details link and full keyboard support; image skeletons and
-fade-in; contact form with inquiry types, date/time fields, validation,
-loading and confirmation states and a demo notice; services process and
-about-page process details. "Book a Test Drive" is now "Request a Test Drive"
-everywhere because a test drive is a request until the team confirms it.
+Each vehicle can now carry extra photos in a `views` object in
+`js/data/vehicles.js`:
 
-**Still needs real input**: real prices/mileage/availability; larger extra
-photos for the other eight cars; confirmation of the process wording on the
-Services and About pages (confirmation time, licence requirement, what is
-inspected); a manufacturer-sheet check of the `approx.` weights and the 750S
-kerb weight; the BMW M4 CSL main (front) photo.
+```js
+views: {
+    interior: "assets/images/ferrari-296-gtb-interior.jpg",
+    rear: "assets/images/ferrari-296-gtb-rear.jpg",
+},
+```
 
-
----
-
-## v9 changes
-
-- **New hero photos** for all 12 cars replace the old main images (`assets/images/<id>.jpg`). This also fixes the earlier mismatches (Vantage, GT-R and 718 main photos, and the standard-M4 `photoCheck` note, which was removed).
-- **Rear + interior photos** added for the Ferrari 296 GTB, Revuelto, Huracán STO, 750S, Corvette Z06, Mustang Dark Horse and AMG GT 63 S (`<id>-rear.jpg`, `<id>-interior.jpg`, wired through `views` in `js/data/vehicles.js`).
-- **Page banners**: Inventory, Services, About, Gallery and Contact now have a photo banner (`.page-banner` in `css/pages.css`). Change the photo with the inline `background-image`, and the crop with `--banner-pos`.
-- **Services**: "Request a test drive" is now a real `.btn.btn-primary` placed under the Test Drives paragraph.
+Files follow the pattern `<vehicle-id>-interior.jpg` / `<vehicle-id>-rear.jpg`
+in `assets/images/`. Vehicles with extra views get a **Photos** section on
+their detail page (large stage + Exterior / Interior / Rear thumbnails,
+`js/components/viewer.js`) and Exterior / Interior / Rear buttons in the
+gallery lightbox. A vehicle without `views` simply shows its single photo.
+Currently every vehicle has both extra views except the Porsche 911 GT3 RS,
+which has none yet: drop `porsche-911-gt3-rs-interior.jpg` and
+`porsche-911-gt3-rs-rear.jpg` into `assets/images/` and add a `views` entry.

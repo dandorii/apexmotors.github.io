@@ -11,28 +11,42 @@ export function initNavigation() {
     // fails silently instead of throwing on every page load.
     if (!toggle || !links) return;
 
-    toggle.addEventListener("click", () => {
-        const isOpen = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", String(!isOpen));
-        links.classList.toggle("is-open", !isOpen);
-    });
+    // Single place that changes open/closed state: aria-expanded stays the
+    // source of truth, the class drives CSS, and a body class locks page
+    // scroll behind the open menu.
+    const setOpen = (open) => {
+        toggle.setAttribute("aria-expanded", String(open));
+        links.classList.toggle("is-open", open);
+        document.body.classList.toggle("nav-open", open);
+    };
 
-    // Escape closes the open menu and hands focus back to the button.
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
-            toggle.setAttribute("aria-expanded", "false");
-            links.classList.remove("is-open");
-            toggle.focus();
-        }
-    });
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+
+    toggle.addEventListener("click", () => setOpen(!isOpen()));
 
     // Close the mobile menu whenever a link is chosen, so navigating to a
     // new page (or an in-page anchor) doesn't leave the menu open.
     links.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-            toggle.setAttribute("aria-expanded", "false");
-            links.classList.remove("is-open");
-        });
+        link.addEventListener("click", () => setOpen(false));
+    });
+
+    // Escape closes the menu and returns focus to the toggle.
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && isOpen()) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
+
+    // Tapping outside the header closes the menu.
+    document.addEventListener("click", (event) => {
+        if (isOpen() && !event.target.closest(".site-header")) setOpen(false);
+    });
+
+    // Growing the viewport past the mobile breakpoint resets the state so
+    // the scroll lock never lingers on desktop.
+    window.matchMedia("(min-width: 861px)").addEventListener("change", (event) => {
+        if (event.matches) setOpen(false);
     });
 }
 

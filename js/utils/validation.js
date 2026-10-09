@@ -40,24 +40,3 @@ export function validatePhone(value) {
     const digitCount = trimmed.replace(/\D/g, "").length;
     return digitCount >= 7 ? "" : "Enter a valid phone number.";
 }
-
-// -- v8: scheduling validators for test-drive requests ----------------------
-// The showroom hours on the contact page are Tuesday-Sunday, so a request
-// for a Monday or a past date is caught here instead of being "accepted".
-
-export function validatePreferredDate(value, now = new Date()) {
-    const v = toSafeString(value).trim();
-    if (v === "") return "Choose a preferred date.";
-    // Parse yyyy-mm-dd as a LOCAL date (new Date("2026-10-06") would be UTC).
-    const [y, m, d] = v.split("-").map(Number);
-    const date = new Date(y, m - 1, d);
-    if (Number.isNaN(date.getTime())) return "Enter a valid date.";
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    if (date < today) return "Choose today or a future date.";
-    if (date.getDay() === 1) return "The showroom is closed on Mondays. Please choose Tuesday to Sunday.";
-    return "";
-}
-
-export function validateChoice(value, message) {
-    return toSafeString(value).trim() === "" ? message : "";
-}

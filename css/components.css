@@ -7,93 +7,63 @@
 /* -- Buttons ---------------------------------------------------------- */
 
 .btn {
-    position: relative;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.95rem 1.9rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
+    gap: 0.5rem;
+    padding: 0.85rem 1.7rem;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    letter-spacing: 0.01em;
     border: 1px solid transparent;
-    cursor: pointer;
+    position: relative;
     overflow: hidden;
-    transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
-        background var(--duration) var(--ease), border-color var(--duration) var(--ease),
-        color var(--duration) var(--ease), filter var(--duration) var(--ease);
+    transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease),
+        color var(--duration) var(--ease), transform var(--duration) var(--ease-out),
+        box-shadow var(--duration) var(--ease);
 }
 
-.btn::after {
-    content: "\2192";
-    font-weight: 400;
-    transition: transform var(--duration) var(--ease);
-}
-
-.btn.no-arrow::after {
-    content: none;
-}
-
-.btn:hover::after {
-    transform: translateX(4px);
+.btn:hover {
+    transform: translateY(-2px);
 }
 
 .btn:active {
-    transform: translateY(1px) scale(0.99);
+    transform: translateY(0);
 }
 
 .btn-primary {
-    background: linear-gradient(180deg, var(--color-btn-top) 0%, var(--color-accent) 55%, var(--color-accent-deep) 100%);
-    color: var(--color-on-accent);
+    background: var(--color-accent);
+    color: #fff;
     border-color: var(--color-accent-bright);
-    box-shadow: 0 10px 26px -10px var(--color-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-/* soft sheen that sweeps across on hover */
-.btn-primary::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -60%;
-    width: 40%;
-    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-    transform: skewX(-18deg);
-    transition: left 0.7s var(--ease);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.07);
-    box-shadow: 0 16px 34px -10px var(--color-accent-glow), 0 0 0 1px rgba(232, 56, 77, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: var(--color-accent-bright);
+    border-color: var(--color-accent-bright);
+    box-shadow: 0 10px 26px -10px rgba(196, 41, 59, 0.7);
 }
 
-.btn-primary:hover::before {
-    left: 130%;
+/* Light sweep across the primary button on hover */
+.btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+    transform: translateX(-120%);
+}
+
+.btn-primary:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.8s var(--ease-out);
 }
 
 .btn-outline {
-    border: 2px solid var(--color-border-button);
+    border-color: var(--color-border-emphasis);
     color: var(--color-text);
-    background: transparent;
 }
 
 .btn-outline:hover {
-    border-color: var(--color-accent-bright);
-    color: var(--color-text);
-    background: var(--color-tint);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px -12px var(--color-accent-glow);
-}
-
-.btn-lg {
-    padding: 1.15rem 2.2rem;
-    font-size: 0.98rem;
-}
-
-.btn-block {
-    width: 100%;
+    border-color: var(--color-text);
+    background: var(--color-surface);
 }
 
 .btn-row {
@@ -106,46 +76,22 @@
    Because we do not have photo before, each
    card uses a typographic "spec plate" treatment instead of a photo:
    the manufacturer + model set in large display type over a dark,
-   engraved panel. This keeps the showroom feeling premium and editorial
+   engraved panel. This keeps the showroom feeling editorial
    without implying an official photo of the car. */
 
 .vehicle-card {
-    position: relative;
     border: 1px solid var(--color-border);
     background: var(--color-surface);
     display: flex;
     flex-direction: column;
-    cursor: pointer;
-    transition: border-color var(--duration) var(--ease), transform var(--duration) var(--ease),
-        box-shadow var(--duration) var(--ease), background var(--duration) var(--ease);
+    transition: border-color var(--duration) var(--ease), transform 0.5s var(--ease-out),
+        box-shadow 0.5s var(--ease-out);
 }
 
-/* red accent bar that draws in along the top edge */
-.vehicle-card::before {
-    content: "";
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    height: 3px;
-    z-index: 3;
-    background: linear-gradient(90deg, var(--color-accent-bright), var(--color-accent));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s var(--ease);
-}
-
-.vehicle-card:hover,
-.vehicle-card:focus-within {
-    border-color: var(--color-accent-bright);
-    transform: translateY(-8px);
-    background: var(--color-surface-alt);
-    box-shadow: var(--shadow-card), 0 0 38px -10px var(--color-accent-glow);
-}
-
-.vehicle-card:hover::before,
-.vehicle-card:focus-within::before {
-    transform: scaleX(1);
+.vehicle-card:hover {
+    border-color: var(--color-border-strong);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card);
 }
 
 .vehicle-plate {
@@ -154,7 +100,7 @@
     overflow: hidden;
     background:
         radial-gradient(circle at 20% 15%, rgba(161, 29, 44, 0.35), transparent 55%),
-        linear-gradient(160deg, var(--color-plate-a) 0%, var(--color-plate-b) 70%);
+        linear-gradient(160deg, #1c1c1f 0%, #101012 70%);
     display: flex;
     align-items: flex-end;
     padding: 1.25rem;
@@ -180,44 +126,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1);
-    filter: brightness(0.9) saturate(1);
-    transition: transform 0.9s var(--ease), filter 0.5s var(--ease);
+    transition: transform 0.9s var(--ease-out);
 }
 
-.vehicle-card:hover .vehicle-plate-photo,
-.vehicle-card:focus-within .vehicle-plate-photo {
-    transform: scale(1.09);
-    filter: brightness(1.08) saturate(1.12);
-}
-
-/* "View" pill that appears over the photo so cards read as clickable */
-.vehicle-plate-cta {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 2;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    padding: 0.5rem 0.9rem;
-    box-shadow: var(--shadow-red);
-    opacity: 0;
-    transform: translateY(-8px);
-    transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
-}
-
-.vehicle-card:hover .vehicle-plate-cta,
-.vehicle-card:focus-within .vehicle-plate-cta {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-@media (hover: none) {
-    .vehicle-plate-cta { opacity: 1; transform: none; }
+.vehicle-card:hover .vehicle-plate-photo {
+    transform: scale(1.07);
 }
 
 /* Sits above the photo (markup order: photo, then this overlay, then the
@@ -232,31 +145,33 @@
     position: absolute;
     top: 1rem;
     left: 1.25rem;
-    font-size: 0.72rem;
-    color: var(--color-on-image);
-    border: 1px solid rgba(244, 241, 237, 0.45);
-    background: rgba(10, 10, 11, 0.62);
-    backdrop-filter: blur(6px);
+    font-size: var(--fs-label);
+    letter-spacing: 0.04em;
+    color: var(--color-on-photo-muted);
+    border: 1px solid var(--color-on-photo-border);
+    background: rgba(10, 10, 11, 0.35);
+    backdrop-filter: blur(4px);
     padding: 0.25rem 0.6rem;
-    z-index: 2;
 }
 
 .vehicle-plate-name {
     position: relative;
-    z-index: 2;
     font-family: var(--font-display);
-    color: var(--color-on-image);
-    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
-    line-height: 1.05;
+    color: var(--color-on-photo);
+    font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+    line-height: 1.08;
+    letter-spacing: var(--tracking-heading);
 }
 
 .vehicle-plate-name small {
     display: block;
     font-family: var(--font-body);
-    font-size: 0.74rem;
-    color: var(--color-on-image-accent);
-    letter-spacing: 0.05em;
-    margin-bottom: 0.35rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-on-photo-accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.4rem;
 }
 
 .vehicle-card-body {
@@ -271,12 +186,16 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem 1rem;
-    font-size: 0.84rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
 }
 
 .vehicle-card-specs dt {
     color: var(--color-text-faint);
+    font-size: var(--fs-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.1rem;
 }
 
 .vehicle-card-specs dd {
@@ -286,46 +205,23 @@
 
 .vehicle-card-link {
     margin-top: auto;
-    font-size: 0.88rem;
-    font-weight: 600;
+    font-size: var(--fs-small);
+    font-weight: 500;
     color: var(--color-accent-text);
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
     gap: 0.4rem;
     border-top: 1px solid var(--color-border);
     padding-top: 0.9rem;
-    transition: color var(--duration) var(--ease), letter-spacing var(--duration) var(--ease);
-}
-
-/* stretched link: the whole card is the click target */
-.vehicle-card-link::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 4;
 }
 
 .vehicle-card-link .arrow {
     display: inline-block;
-    transition: transform var(--duration) var(--ease);
+    transition: transform 0.4s var(--ease-out);
 }
 
-.vehicle-card:hover .vehicle-card-link {
-    color: var(--color-text);
-}
-
-.vehicle-card:hover .vehicle-card-link .arrow {
-    transform: translateX(6px);
-}
-
-.vehicle-card-link:focus-visible {
-    outline: none;
-}
-
-.vehicle-card:has(.vehicle-card-link:focus-visible) {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 3px;
+.vehicle-card-link:hover .arrow {
+    transform: translateX(5px);
 }
 
 /* -- Filters ------------------------------------------------------------ */
@@ -348,8 +244,21 @@
 }
 
 .filter-group label {
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--color-text-muted);
+}
+
+.filter-group select {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+    height: 2.75rem;
+    padding: 0 0.75rem;
+    font-size: var(--fs-small);
+    transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
 }
 
 .filter-group select:hover,
@@ -357,18 +266,13 @@
     border-color: var(--color-accent-bright);
 }
 
-.filter-group select {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border-button);
-    color: var(--color-text);
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
-}
-
 .filter-count {
     margin-left: auto;
-    align-self: center;
-    font-size: 0.85rem;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    height: 2.75rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
 }
 
@@ -376,71 +280,48 @@
     align-self: flex-end;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    min-height: 44px;
+    gap: 0.6rem;
+    height: 2.75rem;
     padding: 0 1.2rem;
-    background: var(--color-tint);
-    border: 2px solid var(--color-accent-bright);
-    border-radius: 4px;
-    color: var(--color-text);
-    font-size: 0.88rem;
+    font-size: var(--fs-small);
     font-weight: 600;
-    letter-spacing: 0.02em;
+    color: var(--color-text-strong);
+    background: rgba(196, 41, 59, 0.08);
+    border: 1px solid var(--color-accent-bright);
+    border-radius: 6px;
     transition: background var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
-        border-color var(--duration) var(--ease), transform 0.15s var(--ease);
-}
-
-/* small "x" icon that turns a quarter on hover, echoing the menu button */
-.filter-reset::before {
-    content: "\2715";
-    font-size: 0.8rem;
-    line-height: 1;
-    color: var(--color-accent-text);
-    transition: transform var(--duration) var(--ease), color var(--duration) var(--ease);
+        transform var(--duration) var(--ease-out);
 }
 
 .filter-reset:hover {
-    background: var(--color-tint-strong);
-    border-color: var(--color-accent-bright);
-}
-
-.filter-reset:hover::before {
-    transform: rotate(90deg);
+    background: rgba(196, 41, 59, 0.18);
+    box-shadow: 0 6px 20px rgba(196, 41, 59, 0.28);
+    transform: translateY(-1px);
 }
 
 .filter-reset:active {
-    transform: scale(0.95);
-    background: var(--color-accent);
-    border-color: var(--color-accent-bright);
-    box-shadow: 0 0 0 4px var(--color-tint-strong), var(--shadow-red);
-    color: var(--color-on-accent);
+    transform: translateY(0) scale(0.97);
 }
 
-.filter-reset:active::before {
-    color: var(--color-on-accent);
+/* The red cross spins and grows on hover/focus, and spins a full turn on click. */
+.filter-reset-icon {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: var(--color-accent-text);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    transition: transform 0.5s var(--ease-out);
 }
 
-@media (max-width: 620px) {
-    .filter-bar {
-        padding: 1.25rem;
-        gap: 1.1rem;
-    }
-    .filter-group {
-        width: 100%;
-    }
-    .filter-group select {
-        width: 100%;
-        min-height: 44px;
-    }
-    .filter-reset {
-        width: 100%;
-    }
-    .filter-count {
-        margin-left: 0;
-        width: 100%;
-        text-align: center;
-    }
+.filter-reset:hover .filter-reset-icon,
+.filter-reset:focus-visible .filter-reset-icon {
+    transform: rotate(180deg) scale(1.2);
+}
+
+.filter-reset:active .filter-reset-icon {
+    transform: rotate(360deg) scale(0.9);
+    transition-duration: 0.25s;
 }
 
 /* -- Forms ---------------------------------------------------------------- */
@@ -462,8 +343,9 @@
 }
 
 .form-field label {
-    font-size: 0.9rem;
-    color: var(--color-text);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--color-text-muted);
 }
 
 .form-field label .required {
@@ -474,11 +356,27 @@
 .form-field select,
 .form-field textarea {
     background: var(--color-surface);
-    border: 1px solid var(--color-border-button);
+    border: 1px solid var(--color-border-strong);
     color: var(--color-text);
     padding: 0.8rem 0.9rem;
-    font-size: 0.95rem;
+    font-size: var(--fs-body);
     font-family: inherit;
+    transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease),
+        background var(--duration) var(--ease);
+}
+
+.form-field input:hover,
+.form-field select:hover,
+.form-field textarea:hover {
+    border-color: var(--color-border-emphasis);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: var(--color-accent-bright);
+    box-shadow: 0 0 0 3px rgba(196, 41, 59, 0.18);
+    outline: none;
 }
 
 .form-field textarea {
@@ -487,7 +385,7 @@
 }
 
 .form-error {
-    font-size: 0.85rem;
+    font-size: var(--fs-label);
     color: var(--color-accent-text);
     min-height: 1em;
 }
@@ -506,7 +404,7 @@
     margin-top: 1.25rem;
     padding: 1rem 1.25rem;
     border: 1px solid var(--color-border-strong);
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     display: none;
 }
 
@@ -516,12 +414,12 @@
 
 .form-status.is-success {
     border-color: var(--color-success-border);
-    color: var(--color-success);
+    color: var(--color-success-text);
 }
 
 .form-status.is-error {
     border-color: var(--color-accent-bright);
-    color: var(--color-accent-text);
+    color: var(--color-error-text);
 }
 
 @media (max-width: 700px) {
@@ -562,7 +460,7 @@
     inset: 0;
     background:
         radial-gradient(circle at 75% 20%, rgba(161, 29, 44, 0.28), transparent 60%),
-        linear-gradient(200deg, var(--color-plate-a), var(--color-plate-b));
+        linear-gradient(200deg, #1d1d20, #0d0d0e);
 }
 
 .gallery-item-photo {
@@ -571,28 +469,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.9s var(--ease), filter 0.5s var(--ease);
+    transition: transform 1s var(--ease-out), filter 0.6s var(--ease);
 }
 
 .gallery-item:hover .gallery-item-photo,
 .gallery-item:focus-visible .gallery-item-photo {
-    transform: scale(1.07);
-    filter: brightness(1.1);
-}
-
-.gallery-item::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    transition: border-color var(--duration) var(--ease);
-    pointer-events: none;
-    z-index: 2;
-}
-
-.gallery-item:hover::after,
-.gallery-item:focus-visible::after {
-    border-color: var(--color-accent-bright);
+    transform: scale(1.06);
 }
 
 /* Sits above the photo so the label stays legible over any image. */
@@ -605,16 +487,24 @@
 .gallery-item-label {
     position: relative;
     font-family: var(--font-display);
-    color: var(--color-on-image);
-    font-size: 1.05rem;
+    color: var(--color-on-photo);
+    font-size: 1.15rem;
+    line-height: 1.15;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.gallery-item:hover .gallery-item-label {
+    transform: translateY(-4px);
 }
 
 .gallery-item-label small {
     display: block;
     font-family: var(--font-body);
-    font-size: 0.75rem;
-    color: var(--color-on-image-muted);
-    margin-top: 0.2rem;
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-on-photo-muted);
+    margin-top: 0.3rem;
 }
 
 @media (max-width: 760px) {
@@ -627,7 +517,56 @@
     }
 }
 
-/* -- Lightbox: see v8 block at end of file -- */
+/* -- Lightbox ------------------------------------------------------------- */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: var(--color-lightbox-bg);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: var(--gutter);
+}
+
+.lightbox.is-open {
+    display: flex;
+}
+
+.lightbox-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    max-width: 960px;
+    max-height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    padding: 2.5rem;
+    position: relative;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+    width: 36px;
+    height: 36px;
+}
+
+.lightbox-title {
+    margin-top: 1rem;
+    font-size: var(--fs-h2);
+}
+
+.lightbox-desc {
+    color: var(--color-text-muted);
+    font-size: var(--fs-lead);
+    margin-top: 0.75rem;
+    max-width: 60ch;
+}
 
 /* -- Small reusable bits -------------------------------------------------- */
 
@@ -640,7 +579,9 @@
 .tag {
     border: 1px solid var(--color-border-strong);
     padding: 0.4rem 0.85rem;
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--color-text-muted);
 }
 
@@ -651,359 +592,176 @@
     margin: 3rem 0;
 }
 
+/* -- Enlarged gallery photo ------------------------------------------------ */
 
-/* -- Mobile: keep card text and badges from colliding ------------------ */
-@media (max-width: 620px) {
-    .vehicle-plate {
-        padding: 1rem;
-    }
-    .vehicle-plate-category,
-    .vehicle-plate-cta {
-        top: 0.75rem;
-        font-size: 0.66rem;
-        padding: 0.3rem 0.6rem;
-    }
-    .vehicle-plate-category { left: 1rem; }
-    .vehicle-plate-cta { right: 0.75rem; }
-    .vehicle-plate-name {
-        font-size: clamp(1.25rem, 6vw, 1.5rem);
-        overflow-wrap: anywhere;
-    }
-    .vehicle-card-specs {
-        font-size: 0.8rem;
-        gap: 0.4rem 0.75rem;
-    }
-    .vehicle-card-link { font-size: 0.85rem; }
+.lightbox-photo {
+    display: block;
+    width: 100%;
+    max-height: 62vh;
+    object-fit: contain;
+    background: #000;
+    margin-bottom: 1.25rem;
 }
 
-/* ==========================================================================
-   v8 components: status/price badges, skeleton loading, form states,
-   lightbox, demo notices
-   ========================================================================== */
+.lightbox-photo[hidden] {
+    display: none;
+}
 
-/* -- Buying info on cards ------------------------------------------------ */
-.vehicle-card-buy {
+.lightbox-close {
+    z-index: 1;
+    background: rgba(10, 10, 11, 0.75);
+    cursor: pointer;
+}
+
+/* -- Availability badge, card actions, form notes --------------------------- */
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    background: var(--color-badge-bg);
+}
+
+.status-available { color: var(--status-available); }
+.status-reserved { color: var(--status-reserved); }
+.status-sold { color: var(--status-sold); }
+
+.vehicle-plate .status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+}
+
+.vehicle-card-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
 }
 
-.vehicle-price {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    line-height: 1.1;
+.vehicle-card-actions .vehicle-card-link {
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
-.vehicle-price.is-request {
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 600;
+.form-field[hidden],
+.form-hint[hidden],
+.required[hidden] {
+    display: none;
+}
+
+.form-hint,
+.form-note {
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
 }
 
-.vehicle-condition {
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
-    margin-top: -0.45rem;
+.form-hint {
+    grid-column: 1 / -1;
+    margin: 0;
 }
 
-/* Status uses text + a dot, never colour alone */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
+.form-note {
+    margin-top: 1.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-accent-bright);
+}
+
+/* -- CTA button: red gradient with a glow and a sliding arrow ------------------ */
+
+.btn-cta {
+    padding: 0.85rem 1.5rem;
     font-weight: 600;
-    letter-spacing: 0.03em;
-    padding: 0.25rem 0.65rem;
-    border: 1px solid currentColor;
-    border-radius: 999px;
-    white-space: nowrap;
+    color: #fff;
+    border: 1px solid rgba(220, 70, 85, 0.65);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #cc2b3f 0%, #c4293b 55%, #9c1b2a 100%);
+    box-shadow: 0 6px 22px rgba(196, 41, 59, 0.35);
 }
 
-.status-badge::before {
-    content: "";
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: currentColor;
+.btn-cta:hover,
+.btn-cta:focus-visible {
+    background: linear-gradient(180deg, #d8344a 0%, #cc2b3f 55%, #a81e2e 100%);
+    box-shadow: 0 8px 28px rgba(196, 41, 59, 0.5);
 }
 
-.status-available { color: var(--color-success); }
-.status-reserved { color: var(--color-warning); }
-.status-sold { color: var(--color-sold); }
-.status-sold::before { border-radius: 1px; }
-
-.vehicle-card.is-sold .vehicle-plate-photo {
-    filter: grayscale(0.85) brightness(0.8);
+.btn-cta .arrow {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out);
 }
 
-.vehicle-card.is-sold:hover .vehicle-plate-photo {
-    filter: grayscale(0.4) brightness(0.95);
+.btn-cta:hover .arrow {
+    transform: translateX(5px);
 }
 
-/* -- Image skeletons + fade-in ---------------------------------------------
-   Wrappers get .is-loading until their <img> loads (imageLoad.js). The
-   shimmer sits on the wrapper; the image is transparent until .is-loaded. */
-.is-loading {
-    position: relative;
+/* -- Lightbox view buttons ------------------------------------------------------------ */
+
+.lightbox-views {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
 }
 
-.is-loading::after {
+.lightbox-views[hidden] {
+    display: none;
+}
+
+.lightbox-view-btn {
+    padding: 0.5rem 1rem;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    background: none;
+    border: 1px solid var(--color-border-strong);
+    transition: color var(--duration) var(--ease), border-color var(--duration) var(--ease),
+        background var(--duration) var(--ease);
+}
+
+.lightbox-view-btn:hover {
+    color: var(--color-text-strong);
+    border-color: var(--color-border-emphasis);
+}
+
+.lightbox-view-btn[aria-pressed="true"] {
+    color: #fff;
+    background: var(--color-accent);
+    border-color: var(--color-accent-bright);
+}
+
+/* -- Whole card is clickable ----------------------------------------------------------
+   The "View vehicle" link stretches over the entire card; "Request price"
+   sits above it so it still works as its own link. */
+
+.vehicle-card {
+    cursor: pointer;
+}
+
+.vehicle-card-main-link::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(100deg, transparent 20%, var(--color-tint-strong) 50%, transparent 80%);
-    background-size: 220% 100%;
-    animation: skeleton 1.4s linear infinite;
 }
 
-@keyframes skeleton {
-    from { background-position: 120% 0; }
-    to { background-position: -120% 0; }
-}
-
-.vehicle-plate-photo,
-.gallery-item-photo,
-.vg-main,
-.lightbox-img {
-    opacity: 0;
-    transition: opacity 0.6s var(--ease), transform 0.9s var(--ease), filter 0.5s var(--ease);
-}
-
-.vehicle-plate-photo.is-loaded,
-.gallery-item-photo.is-loaded,
-.vg-main.is-loaded,
-.lightbox-img.is-loaded {
-    opacity: 1;
-}
-
-/* If scripts fail the images must still show */
-.no-js .vehicle-plate-photo,
-.no-js .gallery-item-photo { opacity: 1; }
-
-.has-error::before { content: "Image unavailable"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-muted); font-size: 0.85rem; z-index: 1; }
-
-/* -- Demo notices ------------------------------------------------------------ */
-.demo-note {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-top: 0.9rem;
-    padding-left: 0.8rem;
-    border-left: 2px solid var(--color-accent-bright);
-    max-width: 70ch;
-}
-
-.demo-banner {
-    border: 1px solid var(--color-accent-bright);
-    background: var(--color-tint);
-    padding: 0.9rem 1.1rem;
-    font-size: 0.92rem;
-    margin-bottom: 1.75rem;
-}
-
-.demo-tag {
-    display: inline-block;
-    margin-left: 0.4rem;
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-accent-text);
-    border: 1px solid var(--color-accent-bright);
-    padding: 0.1rem 0.45rem;
-    vertical-align: middle;
-}
-
-.text-link {
-    color: var(--color-accent-text);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.text-link:hover { color: var(--color-text); }
-
-/* -- Form: hints, summary, loading, confirmation ------------------------------ */
-.form-hint {
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
-}
-
-.form-hint:empty { display: none; }
-
-.form-field[hidden] { display: none; }
-
-.form-field[data-invalid="true"] input,
-.form-field[data-invalid="true"] select,
-.form-field[data-invalid="true"] textarea {
-    border-width: 2px;
-}
-
-.form-error:not(:empty)::before { content: "\26A0\FE0E  "; }
-
-.form-summary {
-    border: 2px solid var(--color-accent-bright);
-    background: var(--color-tint);
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-}
-
-.form-summary ul { margin-top: 0.6rem; display: grid; gap: 0.3rem; }
-.form-summary a { color: var(--color-accent-text); text-decoration: underline; text-underline-offset: 3px; }
-.form-summary[hidden] { display: none; }
-
-.form-status-live { margin-top: 0.9rem; font-size: 0.9rem; color: var(--color-text-muted); min-height: 1.4em; }
-
-.spinner {
-    display: none;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.btn.is-loading .spinner { display: inline-block; }
-.btn:disabled { cursor: progress; opacity: 0.85; transform: none; }
-
-.form-confirmation {
-    border: 2px solid var(--color-success-border);
-    background: var(--color-surface);
-    padding: 2rem;
-    display: grid;
-    gap: 1.1rem;
-}
-
-.form-confirmation[hidden] { display: none; }
-.form-confirmation h2 { font-size: 1.6rem; color: var(--color-success); }
-.demo-banner-inline { border-left: 3px solid var(--color-accent-bright); padding-left: 0.8rem; }
-.confirm-rows { display: grid; gap: 0.5rem; margin: 0; }
-.confirm-rows div { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
-.confirm-rows dt { color: var(--color-text-muted); }
-.confirm-rows dd { margin: 0; }
-
-/* -- Lightbox (image viewer) ---------------------------------------------------- */
-body.modal-open { overflow: hidden; }
-
-.lightbox {
-    position: fixed;
-    inset: 0;
-    background: var(--color-scrim);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    padding: clamp(0.5rem, 3vw, 2rem);
-    overflow-y: auto;
-}
-
-.lightbox.is-open { display: flex; animation: lb-in 0.25s var(--ease); }
-
-@keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
-
-.lightbox-panel {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-strong);
-    max-width: 1000px;
-    width: 100%;
-    max-height: calc(100vh - 1rem);
-    overflow-y: auto;
+.vehicle-card-actions .vehicle-card-link:not(.vehicle-card-main-link) {
     position: relative;
-    margin: auto;
-}
-
-.lightbox-close {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 3;
-    width: 44px;
-    height: 44px;
-    font-size: 1.6rem;
-    line-height: 1;
-    background: rgba(10, 10, 11, 0.75);
-    border: 1px solid rgba(244, 241, 237, 0.7);
-    color: #fff;
-}
-
-.lightbox-close:hover { background: var(--color-accent); }
-
-.lightbox-stage {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    background: var(--color-plate-b);
-    overflow: hidden;
-}
-
-.lightbox-img { width: 100%; height: 100%; object-fit: cover; }
-
-.lightbox-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     z-index: 2;
-    width: 44px;
-    height: 44px;
-    background: rgba(10, 10, 11, 0.7);
-    border: 1px solid rgba(244, 241, 237, 0.6);
-    color: #fff;
-    font-size: 1.1rem;
 }
 
-.lightbox-nav:hover { background: var(--color-accent); }
-.lightbox-prev { left: 0.75rem; }
-.lightbox-next { right: 0.75rem; }
-
-.lightbox-thumbs { display: flex; gap: 0.5rem; padding: 0.6rem 1.25rem 0; flex-wrap: wrap; }
-.lightbox-thumbs:empty { display: none; }
-.lightbox-thumb { width: 72px; aspect-ratio: 16 / 10; padding: 0; border: 2px solid var(--color-border); background: none; overflow: hidden; }
-.lightbox-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.lightbox-thumb.is-active { border-color: var(--color-accent-bright); }
-
-.lightbox-info { padding: 1.25rem 1.5rem 1.75rem; display: grid; gap: 0.7rem; }
-.lightbox-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.lightbox-count { font-size: 0.85rem; color: var(--color-text-muted); }
-.lightbox-title { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0; }
-.lightbox-meta { font-weight: 600; }
-.lightbox-desc { color: var(--color-text-muted); max-width: 70ch; }
-.lightbox-link { justify-self: start; margin-top: 0.4rem; }
-
-@media (max-width: 620px) {
-    .lightbox-info { padding: 1rem 1.1rem 1.4rem; }
-    .lightbox-link { justify-self: stretch; }
-    .confirm-rows div { grid-template-columns: 1fr; gap: 0.1rem; }
+.vehicle-card:hover .vehicle-card-main-link .arrow {
+    transform: translateX(5px);
 }
 
-/* Gallery tiles: fixed ratio is already set; make sure focus is visible */
-.gallery-item:focus-visible { outline: 3px solid var(--color-focus); outline-offset: -3px; }
-
-/* Lightbox on wide screens: photo left, details right, so the whole
-   dialog (including "View Vehicle Details") fits without scrolling. */
-@media (min-width: 900px) {
-    .lightbox-panel {
-        display: grid;
-        grid-template-columns: 1.7fr 1fr;
-        grid-template-areas: "stage info" "thumbs info";
-        grid-template-rows: auto 1fr;
-        align-items: start;
-        max-width: 1100px;
-    }
-    .lightbox-stage { grid-area: stage; aspect-ratio: 4 / 3; }
-    .lightbox-thumbs { grid-area: thumbs; padding-bottom: 0.9rem; }
-    .lightbox-info { grid-area: info; padding: 3.4rem 1.75rem 1.75rem; align-content: start; }
-}
-
-@media (min-width: 900px) {
-    .lightbox-stage { aspect-ratio: auto; height: 100%; min-height: 440px; }
-    .lightbox-img { position: absolute; inset: 0; }
+/* Gallery lightbox: link through to the specs */
+.lightbox-specs {
+    margin-top: 1.5rem;
 }

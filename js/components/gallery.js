@@ -1,26 +1,20 @@
-import { vehicles, STATUS } from "../data/vehicles.js";
-import { vehicleName, formatPrice, conditionLine } from "../utils/format.js";
-import { watchImage } from "../utils/imageLoad.js";
+import { vehicles, getVehicleViews } from "../data/vehicles.js";
 
-// Renders one gallery tile per vehicle. Tiles are real <button>s, so the
-// grid is keyboard and screen-reader friendly without extra wiring.
-// Each tile has a fixed aspect ratio (CSS), so layout never jumps, and
-// shows a shimmer skeleton until its photo has loaded and faded in.
+// Renders one gallery tile per vehicle into the given grid container.
+// Each tile is a real <button>, not a <div>, so the gallery is fully
+// keyboard- and screen-reader-navigable without any extra tabindex/role
+// wiring — buttons get that behavior for free.
 export function renderGallery(gridElement) {
     if (!gridElement) return;
 
-    vehicles.forEach((vehicle, i) => {
+    vehicles.forEach((vehicle) => {
         const item = document.createElement("button");
         item.type = "button";
         item.className = `gallery-item${vehicle.image ? " has-photo" : ""}`;
         item.setAttribute("aria-haspopup", "dialog");
-        item.setAttribute("aria-label", `${vehicleName(vehicle)}: open larger photo`);
-        // First row loads eagerly so the top of the page is never blank;
-        // everything below lazy-loads.
-        const loading = i < 3 ? "eager" : "lazy";
         const photoMarkup = vehicle.image
-            ? `<img class="gallery-item-photo" src="${vehicle.image}" alt="" width="1600" height="1000" loading="${loading}" decoding="async" />
-               <span class="gallery-item-overlay"></span>`
+            ? `<img class="gallery-item-photo" src="${vehicle.image}" alt="${vehicle.manufacturer} ${vehicle.model}" loading="lazy" />
+         <span class="gallery-item-overlay"></span>`
             : "";
         item.innerHTML = `
             ${photoMarkup}
@@ -29,137 +23,93 @@ export function renderGallery(gridElement) {
                 <small>${vehicle.manufacturer}</small>
             </span>
         `;
-        item.addEventListener("click", () => openLightbox(vehicle, item));
+        item.addEventListener("click", () => openLightbox(vehicle));
         gridElement.appendChild(item);
-        const img = item.querySelector("img");
-        if (img) watchImage(img, item);
     });
 }
 
-// -- Lightbox -----------------------------------------------------------------
-// One shared dialog, reused for every tile. It shows a large photo, the key
-// buying facts, and a link through to the full vehicle page.
-let lastTrigger = null;
-let currentIndex = -1;
+// One shared dialog is reused for every tile, rather than building a
+// modal per vehicle up front, so the gallery page's DOM stays small
+// regardless of how many vehicles are in the collection.
+function openLightbox(vehicle) {
+    const lightbox = document.querySelector(".lightbox");
+    const closeButton = lightbox?.querySelector(".lightbox-close");
+    const photoEl = lightbox?.querySelector(".lightbox-photo");
+    const titleEl = lightbox?.querySelector(".lightbox-title");
+    const categoryEl = lightbox?.querySelector(".lightbox-category");
+    const descEl = lightbox?.querySelector(".lightbox-desc");
 
-const els = () => {
-    const box = document.querySelector(".lightbox");
-    if (!box) return null;
-    return {
-        box,
-        close: box.querySelector(".lightbox-close"),
-        stage: box.querySelector(".lightbox-stage"),
-        img: box.querySelector(".lightbox-img"),
-        title: box.querySelector(".lightbox-title"),
-        category: box.querySelector(".lightbox-category"),
-        meta: box.querySelector(".lightbox-meta"),
-        desc: box.querySelector(".lightbox-desc"),
-        link: box.querySelector(".lightbox-link"),
-        thumbs: box.querySelector(".lightbox-thumbs"),
-        count: box.querySelector(".lightbox-count"),
-    };
-};
+    // Bail out rather than partially populate the dialog if the expected
+    // markup isn't there — a half-filled lightbox would be more confusing
+    // than one that simply doesn't open.
+    if (!lightbox || !closeButton || !photoEl || !titleEl || !categoryEl || !descEl) return;
 
-function showVehicle(vehicle) {
-    const e = els();
-    if (!e) return;
-    currentIndex = vehicles.indexOf(vehicle);
-    const name = vehicleName(vehicle);
+    // Show the enlarged photo when the vehicle has one; otherwise hide the
+    // image slot so the dialog falls back to text only.
+    if (vehicle.image) {
+        photoEl.src = vehicle.image;
+        photoEl.alt = `${vehicle.manufacturer} ${vehicle.model}`;
+        photoEl.hidden = false;
+    } else {
+        photoEl.removeAttribute("src");
+        photoEl.hidden = true;
+    }
 
-    e.title.textContent = name;
-    e.category.textContent = vehicle.category;
-    e.meta.textContent = `${formatPrice(vehicle)} · ${conditionLine(vehicle)} · ${STATUS[vehicle.status]}`;
-    e.desc.textContent = vehicle.description;
-    e.link.href = `vehicle.html?id=${encodeURIComponent(vehicle.id)}`;
-    e.link.setAttribute("aria-label", `View vehicle details: ${name}`);
-    e.count.textContent = `${currentIndex + 1} of ${vehicles.length}`;
+    // Exterior / Interior / Rear buttons, when the vehicle has more than one view.
+    const viewsEl = lightbox.querySelector(".lightbox-views");
+    const views = getVehicleViews(vehicle);
+    if (viewsEl) {
+        viewsEl.innerHTML = "";
+        viewsEl.hidden = views.length < 2;
+        if (views.length > 1) {
+            views.forEach((view, index) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "lightbox-view-btn";
+                button.textContent = view.label;
+                button.setAttribute("aria-pressed", String(index === 0));
+                button.addEventListener("click", () => {
+                    photoEl.src = view.src;
+                    photoEl.alt = `${vehicle.manufacturer} ${vehicle.model} — ${view.label.toLowerCase()} view`;
+                    viewsEl.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+                });
+                viewsEl.appendChild(button);
+            });
+        }
+    }
 
-    // Swap the photo with a skeleton + fade so a slow load never shows a
-    // blank panel.
-    e.img.classList.remove("is-loaded");
-    e.stage.classList.add("is-loading");
-    e.img.alt = vehicle.photoCheck ? `${name} (representative photo)` : name;
-    e.img.src = vehicle.image || "";
-    watchImage(e.img, e.stage);
+    titleEl.textContent = `${vehicle.manufacturer} ${vehicle.model}`;
+    categoryEl.textContent = vehicle.category;
+    descEl.textContent = vehicle.description;
+    const specsLink = lightbox.querySelector(".lightbox-specs");
+    if (specsLink) specsLink.href = `vehicle.html?id=${encodeURIComponent(vehicle.id)}`;
+    lightbox.classList.add("is-open");
 
-    // Extra real views (if the vehicle defines them) become thumbnails.
-    e.thumbs.innerHTML = "";
-    const extra = Array.isArray(vehicle.views) ? [{ src: vehicle.image, label: "Main" }, ...vehicle.views] : [];
-    extra.forEach((view, i) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = `lightbox-thumb${i === 0 ? " is-active" : ""}`;
-        b.setAttribute("aria-label", `${name}: ${view.label}`);
-        b.innerHTML = `<img src="${view.src}" alt="" loading="lazy" />`;
-        b.addEventListener("click", () => {
-            e.img.classList.remove("is-loaded");
-            e.stage.classList.add("is-loading");
-            e.img.src = view.src;
-            watchImage(e.img, e.stage);
-            e.thumbs.querySelectorAll(".lightbox-thumb").forEach((t) => t.classList.toggle("is-active", t === b));
-        });
-        e.thumbs.appendChild(b);
-    });
-}
-
-function openLightbox(vehicle, trigger) {
-    const e = els();
-    if (!e) return;
-    lastTrigger = trigger;
-    showVehicle(vehicle);
-    e.box.classList.add("is-open");
-    document.body.classList.add("modal-open"); // stops the page scrolling behind the dialog
-    e.close.focus();
-}
-
-function closeLightbox() {
-    const e = els();
-    if (!e || !e.box.classList.contains("is-open")) return;
-    e.box.classList.remove("is-open");
-    document.body.classList.remove("modal-open");
-    // Return focus to the tile that opened the dialog (keyboard users).
-    lastTrigger?.focus();
-}
-
-function step(delta) {
-    const next = vehicles[(currentIndex + delta + vehicles.length) % vehicles.length];
-    showVehicle(next);
+    // Move focus into the dialog on open, since a mouse click doesn't do
+    // this automatically — without it, keyboard/screen-reader users would
+    // stay focused on a now-hidden gallery tile behind the overlay.
+    closeButton.focus();
 }
 
 export function initLightbox() {
-    const e = els();
-    if (!e || !e.close) return;
+    const lightbox = document.querySelector(".lightbox");
+    const closeButton = lightbox?.querySelector(".lightbox-close");
+    if (!lightbox || !closeButton) return;
 
-    // Three ways to close: the button, a click on the dimmed backdrop (the
-    // overlay itself, not the panel), and Escape.
-    e.close.addEventListener("click", closeLightbox);
-    e.box.addEventListener("click", (event) => {
-        if (event.target === e.box) closeLightbox();
+    const close = () => lightbox.classList.remove("is-open");
+
+    closeButton.addEventListener("click", close);
+
+    // Clicking the dimmed backdrop counts as "outside the panel" only when
+    // the click target is the overlay itself, not something inside it —
+    // otherwise clicking the title or description would also close it.
+    lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) close();
     });
-    e.box.querySelector(".lightbox-prev")?.addEventListener("click", () => step(-1));
-    e.box.querySelector(".lightbox-next")?.addEventListener("click", () => step(1));
 
+    // Escape is a standard, expected way to dismiss any modal dialog,
+    // so it's bound globally rather than only while the lightbox has focus.
     document.addEventListener("keydown", (event) => {
-        if (!e.box.classList.contains("is-open")) return;
-        if (event.key === "Escape") {
-            closeLightbox();
-        } else if (event.key === "ArrowLeft") {
-            step(-1);
-        } else if (event.key === "ArrowRight") {
-            step(1);
-        } else if (event.key === "Tab") {
-            // Focus trap: keep Tab inside the dialog while it is open.
-            const focusable = [...e.box.querySelectorAll("a[href], button:not([disabled])")].filter((n) => n.offsetParent !== null);
-            if (!focusable.length) return;
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first.focus();
-            }
-        }
+        if (event.key === "Escape") close();
     });
 }
